@@ -1,9 +1,9 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import logo from "./logo.svg";
+import "./DefaultLayout.css";
 
-
-function App() {
+const DefaultLayout = props => {
+  const { children } = props;
   return (
     <div className="App">
       <header className="App-header">
@@ -20,8 +20,9 @@ function App() {
           Learn React
         </a>
       </header>
+      {children}
     </div>
   );
 }
 
-export default App;
+export default DefaultLayout;

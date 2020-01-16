@@ -1,10 +1,12 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React from "react";
 import { render } from "react-dom";
 import { createStore, applyMiddleware, compose } from "redux";
 import { Provider } from "react-redux";
 import thunk from "redux-thunk";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./index.css";
-import App from "./App";
+import DefaultLayout from "./DefaultLayout";
 import combineReducers from "./combineReducers";
 import * as serviceWorker from "./serviceWorker";
 
@@ -23,9 +25,40 @@ const configureStore = initialState => {
 
 const store = configureStore();
 
+const HomePage = () => {
+  return <div>Home</div>;
+};
+
+const EventPage = () => {
+  return <div>Event page</div>;
+};
+
+const NotFoundPage = () => {
+  return <div>Not Found</div>;
+};
+
+const renderWithLayout = (Component, Layout) => props => (
+  <Layout {...props}>
+    <Component {...props} />
+  </Layout>
+);
+
 render(
   <Provider store={store}>
-    <App />
+    <Router>
+      <Switch>
+        <Route
+          exact
+          path="/"
+          component={renderWithLayout(HomePage, DefaultLayout)}
+        />
+        <Route
+          path="/event"
+          component={renderWithLayout(EventPage, DefaultLayout)}
+        />
+        <Route component={NotFoundPage} />
+      </Switch>
+    </Router>
   </Provider>,
   document.getElementById("root")
 );
