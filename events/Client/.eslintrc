@@ -4,11 +4,13 @@
     "airbnb",
     "plugin:jsx-a11y/recommended",
     "prettier",
-    "prettier/react"
+    "prettier/react",
+    "plugin:react-redux/recommended"
   ],
   "plugins": [
     "jsx-a11y",
-    "prettier"
+    "prettier",
+    "react-redux"
   ],
   "rules": {
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
