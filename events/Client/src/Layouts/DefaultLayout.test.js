@@ -1,9 +1,7 @@
 import React from "react";
-import { render } from "@testing-library/react";
+import { shallow } from "enzyme";
 import DefaultLayout from "./DefaultLayout";
 
-test("renders learn react link", () => {
-  const { getByText } = render(<DefaultLayout />);
-  const linkElement = getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+it("should renders without crashing", () => {
+  shallow(<DefaultLayout>bla</DefaultLayout>);
 });
