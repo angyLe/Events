@@ -6,7 +6,8 @@ import { Provider } from "react-redux";
 import thunk from "redux-thunk";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./index.css";
-import DefaultLayout from "./DefaultLayout";
+
+import DefaultLayout from "./Layouts/DefaultLayout";
 import combineReducers from "./combineReducers";
 import * as serviceWorker from "./serviceWorker";
 
