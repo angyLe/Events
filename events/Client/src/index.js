@@ -6,10 +6,11 @@ import { Provider } from "react-redux";
 import thunk from "redux-thunk";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./index.css";
-
 import DefaultLayout from "./Layouts/DefaultLayout";
+import EventsInfo from "./Pages/EventsInfo/EventsInfo";
 import combineReducers from "./combineReducers";
 import * as serviceWorker from "./serviceWorker";
+import "semantic-ui-css/semantic.min.css";
 
 const configureStore = initialState => {
   const composeEnhancers =
@@ -26,11 +27,7 @@ const configureStore = initialState => {
 
 const store = configureStore();
 
-const HomePage = () => {
-  return <div>Home</div>;
-};
-
-const EventPage = () => {
+const TestPage = () => {
   return <div>Event page</div>;
 };
 
@@ -51,11 +48,11 @@ render(
         <Route
           exact
           path="/"
-          component={renderWithLayout(HomePage, DefaultLayout)}
+          component={renderWithLayout(EventsInfo, DefaultLayout)}
         />
         <Route
           path="/event"
-          component={renderWithLayout(EventPage, DefaultLayout)}
+          component={renderWithLayout(TestPage, DefaultLayout)}
         />
         <Route component={NotFoundPage} />
       </Switch>
