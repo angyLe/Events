@@ -1,0 +1,29 @@
+.Events-List {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+
+.Event-element {
+    width: 23%;
+    margin: 0 1% 1% 1%;
+}
+
+.Event-element-card {
+    height: 100%;
+    width: 100% !important;
+}
+
+@media only screen and (max-width: 768px) {
+    .Event-element {
+        width: 32%;
+        margin: 0 0.66% 1% 0.66%;
+    }
+}
+
+@media only screen and (max-width: 400px) {
+    .Event-element {
+        width: 100%;
+        margin: 0 0 1% 0;
+    }
+}
