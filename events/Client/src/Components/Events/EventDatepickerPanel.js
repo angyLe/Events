@@ -7,7 +7,7 @@ import tr from "../../Utils/translationHelper";
 
 const EventsDatePickerPanel = props => {
   const { dateFrom, dateTo } = props;
-  const btnDefaultColor = "grey";
+  const btnDefaultColor = "blue";
 
   return (
     <div className="Events-date-picker-panel">
@@ -18,12 +18,10 @@ const EventsDatePickerPanel = props => {
           ${dayjs(dateTo).format("DD MMMM")}`}
         </div>
         <div className="Events-date-picker-btns">
-          <Button.Group floated="left" size="mini">
-            <Button active color={btnDefaultColor}>
-              {tr("Day", "Day")}
-            </Button>
-            <Button color={btnDefaultColor}>{tr("Week", "Week")}</Button>
-            <Button color={btnDefaultColor}>{tr("Month", "Month")}</Button>
+          <Button.Group floated="left" size="mini" color={btnDefaultColor}>
+            <Button active>{tr("Day", "Day")}</Button>
+            <Button>{tr("Week", "Week")}</Button>
+            <Button>{tr("Month", "Month")}</Button>
           </Button.Group>
         </div>
       </div>
@@ -34,7 +32,7 @@ const EventsDatePickerPanel = props => {
 
 EventsDatePickerPanel.defaultProps = {
   dateFrom: "2009-10-14T19:00:00",
-  dateTo: "2009-10-14T19:00:00"
+  dateTo: "2009-10-16T19:00:00"
 };
 
 EventsDatePickerPanel.propTypes = {
