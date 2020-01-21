@@ -1,0 +1,34 @@
+.Events-date-picker-panel{
+    display: flex;
+    justify-content: initial;
+    align-items: center;
+    width:100%;
+}
+
+.Events-date-picker-nav-btns {
+    width: 10%; 
+}
+
+.Events-date-picker-period {
+    width: 80%;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.Events-date-picker-period-btns {
+    margin-top:5px;
+}
+
+
+@media only screen and (max-width: 768px) {
+    
+    .Events-date-picker-period {
+        width: 60%;
+    }
+    .Events-date-picker-nav-btns {
+        width: 20%; 
+    }
+}
+  
