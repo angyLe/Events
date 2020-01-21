@@ -7,6 +7,7 @@
 .Event-element {
     width: 23%;
     margin: 0 1% 1% 1%;
+    cursor: pointer;
 }
 
 .Event-element-card {
