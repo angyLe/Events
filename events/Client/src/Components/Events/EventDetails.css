@@ -1,0 +1,47 @@
+.Event-details {
+    width: 60%;
+    margin:auto;
+    text-align:left;
+    margin-bottom: 100px;
+}
+
+.Event-details-thumb {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.Event-details-all-info-items{
+    display:flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.Event-details-all-info-item {
+    width: 48%;
+    display: flex;
+    text-align: left;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    margin-bottom: 5px;
+}
+.Event-details-text {
+    text-align: left;
+    margin-top:10px;
+}
+
+@media only screen and (max-width: 768px) {
+    .Event-details {
+        width:100%;
+    }
+    .Event-details-all-info-items{
+        display:flex;
+        flex-direction: column;
+    }
+    .Event-details-all-info-item  {
+        width: 100%;
+        display:block;
+    }
+    
+}
