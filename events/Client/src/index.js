@@ -7,8 +7,8 @@ import thunk from "redux-thunk";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./index.css";
 import DefaultLayout from "./Layouts/DefaultLayout";
-import EventsInfo from "./Pages/EventsInfo/EventsInfo";
-import EventDetails from "./Pages/EventDetails/EventDetailsPage"
+import EventsInfoPage from "./Pages/EventsInfo/EventsInfoPage";
+import EventDetails from "./Pages/EventDetails/EventDetailsPage";
 import combineReducers from "./combineReducers";
 import * as serviceWorker from "./serviceWorker";
 import "semantic-ui-css/semantic.min.css";
@@ -28,10 +28,6 @@ const configureStore = initialState => {
 
 const store = configureStore();
 
-const TestPage = () => {
-  return <div>Event page</div>;
-};
-
 const NotFoundPage = () => {
   return <div>Not Found</div>;
 };
@@ -49,7 +45,7 @@ render(
         <Route
           exact
           path="/"
-          component={renderWithLayout(EventsInfo, DefaultLayout)}
+          component={renderWithLayout(EventsInfoPage, DefaultLayout)}
         />
         <Route
           path={`/event/:id${1}`}

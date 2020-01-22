@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import EventsList from "../../Components/Events/EventsList";
 import EventsDatePickerPanel from "../../Components/Events/EventDatepickerPanel";
-import "./EventsInfo.css";
+import "./EventsInfoPage.css";
 
 // eslint-disable-next-line react/prefer-stateless-function
-export default class EventsInfo extends Component {
+export default class EventsInfoPage extends Component {
   render() {
     return (
       <div className="Events-Info-Wrapper">
@@ -12,7 +12,7 @@ export default class EventsInfo extends Component {
           <EventsDatePickerPanel />
         </div>
         <div>
-          <EventsList eveventsList="" />
+          <EventsList eventsList={null} />
         </div>
       </div>
     );
