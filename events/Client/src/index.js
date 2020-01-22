@@ -8,6 +8,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./index.css";
 import DefaultLayout from "./Layouts/DefaultLayout";
 import EventsInfo from "./Pages/EventsInfo/EventsInfo";
+import EventDetails from "./Pages/EventDetails/EventDetailsPage"
 import combineReducers from "./combineReducers";
 import * as serviceWorker from "./serviceWorker";
 import "semantic-ui-css/semantic.min.css";
@@ -51,8 +52,8 @@ render(
           component={renderWithLayout(EventsInfo, DefaultLayout)}
         />
         <Route
-          path="/event"
-          component={renderWithLayout(TestPage, DefaultLayout)}
+          path={`/event/:id${1}`}
+          component={renderWithLayout(EventDetails, DefaultLayout)}
         />
         <Route component={NotFoundPage} />
       </Switch>
