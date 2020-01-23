@@ -26,7 +26,7 @@ const EventDetails = props => {
 
   return (
     <div className="Event-details">
-      <Header as="h1">{title}</Header>
+      <h1 className="Event-details-header">{title}</h1>
       <div className="Event-details-from-date">
         {dayjs(dateTimeFrom).format("DD MMMM")}
       </div>
@@ -98,7 +98,7 @@ const EventDetails = props => {
 EventDetails.defaultProps = {
   imgSrc:
     "https://cdn.pixabay.com/photo/2018/05/31/12/02/celebration-3443810_960_720.jpg",
-  title: "Title",
+  title: "Some title",
   text: `It is a long established fact that a reader will be distracted by the 
   readable content of a page when looking at its layout. 
   The point of using Lorem Ipsum is that it has a more-or-less normal 
@@ -111,8 +111,8 @@ EventDetails.defaultProps = {
   `,
   price: 100,
   priceDetails: "100 kr per person",
-  dateTimeFrom: null, // "2009-10-14T19:00:00"
-  dateTimeTo: null,
+  dateTimeFrom: "2009-10-14T19:00:00", // "2009-10-14T19:00:00"
+  dateTimeTo: "2009-10-14T19:00:00",
   website: "www.url.com",
   address: "Pedersgaten, 43, Stavanger, 4012",
   locationLng: null, // 5.733107
