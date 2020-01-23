@@ -2,3 +2,5 @@
 export const DEFAULT_PADDINGS_CLASS_NAME = "Default-paddings";
 
 export const VALUTA = "NOK";
+
+export const DEFAULT_LANG = "en";

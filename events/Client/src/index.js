@@ -1,14 +1,10 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import React from "react";
 import { render } from "react-dom";
 import { createStore, applyMiddleware, compose } from "redux";
 import { Provider } from "react-redux";
 import thunk from "redux-thunk";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import Router from "./router";
 import "./index.css";
-import DefaultLayout from "./Layouts/DefaultLayout";
-import EventsInfoPage from "./Pages/EventsInfo/EventsInfoPage";
-import EventDetails from "./Pages/EventDetails/EventDetailsPage";
 import combineReducers from "./combineReducers";
 import * as serviceWorker from "./serviceWorker";
 import "semantic-ui-css/semantic.min.css";
@@ -28,32 +24,9 @@ const configureStore = initialState => {
 
 const store = configureStore();
 
-const NotFoundPage = () => {
-  return <div>Not Found</div>;
-};
-
-const renderWithLayout = (Component, Layout) => props => (
-  <Layout {...props}>
-    <Component {...props} />
-  </Layout>
-);
-
 render(
   <Provider store={store}>
-    <Router>
-      <Switch>
-        <Route
-          exact
-          path="/"
-          component={renderWithLayout(EventsInfoPage, DefaultLayout)}
-        />
-        <Route
-          path={`/event/:id${1}`}
-          component={renderWithLayout(EventDetails, DefaultLayout)}
-        />
-        <Route component={NotFoundPage} />
-      </Switch>
-    </Router>
+    <Router />
   </Provider>,
   document.getElementById("root")
 );
