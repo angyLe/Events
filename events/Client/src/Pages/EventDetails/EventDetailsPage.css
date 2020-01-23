@@ -1,1 +1,20 @@
+.Event-Details-Wrapper {
+    margin:auto;
+    width: 60%;
+}
 
+.Event-Details-Back-All-Events  {
+    text-align: left;
+}
+
+.Event-Details-Back-All-Events a {
+    cursor:pointer;
+}
+
+
+@media only screen and (max-width: 768px) {
+    
+    .Event-Details-Wrapper {
+        width:100%;
+    }
+}
