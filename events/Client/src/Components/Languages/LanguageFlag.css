@@ -1,0 +1,16 @@
+.Language-picker button.Language-picker-flag-btn {
+    border: none;
+    background-color: transparent;
+    padding: 0px;
+}
+
+.Language-picker button.Language-picker-flag-btn:hover, 
+.Language-picker button.Language-picker-flag-btn:active,
+.Language-picker button.Language-picker-flag-btn:focus  {
+    background-color: transparent;
+    transform: scaleY(1.2);
+}
+
+.Language-picker-flag-btn .Language-picker-flag-inactive {
+    filter: brightness(0.5);
+}
