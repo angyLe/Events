@@ -1,8 +1,14 @@
 .Event-details {
-    width: 60%;
-    margin:auto;
     text-align:left;
     margin-bottom: 100px;
+}
+
+.Event-details-header {
+    font-size:36px;
+}
+
+.Event-details-from-date {
+    font-size: 16px;
 }
 
 .Event-details-thumb {
@@ -32,9 +38,7 @@
 }
 
 @media only screen and (max-width: 768px) {
-    .Event-details {
-        width:100%;
-    }
+    
     .Event-details-all-info-items{
         display:flex;
         flex-direction: column;
