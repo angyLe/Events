@@ -11,6 +11,7 @@ import EventsInfoPage from "./Pages/EventsInfo/EventsInfoPage";
 import EventDetails from "./Pages/EventDetails/EventDetailsPage";
 import { DEFAULT_LANG } from "./constants";
 import PageNotFound from "./Pages/PageNotFound";
+import EventEditorPage from "./Pages/EventEditor/EventEditorPage";
 
 const renderWithLayout = (Component, Layout) => props => {
   if (!Layout) return <Component />;
@@ -45,8 +46,8 @@ const Routes = () => {
                   component={renderWithLayout(Test, DefaultLayout)}
                 />
                 <Route
-                  path={`${url}/createEvent/:id`}
-                  component={renderWithLayout(Test2, DefaultLayout)}
+                  path={`${url}/eventEditor/:id?`}
+                  component={renderWithLayout(EventEditorPage, DefaultLayout)}
                 />
                 <Route component={renderWithLayout(PageNotFound, null)} />
               </Switch>
