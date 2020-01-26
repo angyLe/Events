@@ -13,7 +13,7 @@ const MediaLibrary = props => {
       <MediaLibraryImage
         key={mediaFile.id}
         src={mediaFile.src}
-        onImageClick={onFileClick}
+        onImageClick={() => onFileClick(mediaFile)}
       />
     );
   });
