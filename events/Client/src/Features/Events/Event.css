@@ -1,9 +1,3 @@
-.Events-List {
-    display: flex;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-}
-
 .Event-element {
     width: 23%;
     margin: 0 1% 1% 1%;

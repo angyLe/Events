@@ -4,6 +4,7 @@ import "./Events.css";
 import { Card } from "semantic-ui-react";
 import dayjs from "dayjs";
 import EventPrice from "./EventPrice";
+import "./Event.css";
 
 const Event = props => {
   const { imgSrc, title, shortDescription, price, dateTime } = props;

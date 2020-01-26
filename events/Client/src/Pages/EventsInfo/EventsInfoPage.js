@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import EventsList from "../../Components/Events/EventsList";
-import EventsDatePickerPanel from "../../Components/Events/EventDatepickerPanel";
+import EventsList from "../../Features/Events/EventsList";
+import EventsDatePickerPanel from "../../Features/Events/EventDatepickerPanel";
 import "./EventsInfoPage.css";
 
 // eslint-disable-next-line react/prefer-stateless-function

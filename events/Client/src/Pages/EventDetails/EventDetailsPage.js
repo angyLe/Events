@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import EventDetails from "../../Components/Events/EventDetails";
+import EventDetails from "../../Features/Events/EventDetails";
 import tr from "../../Utils/translationHelper";
 import "./EventDetailsPage.css";
 

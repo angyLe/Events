@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import AppLogo from "../UI/Logo";
-import LanguagePicker from "../Components/Languages/LanguagePicker";
+import LanguagePicker from "../Features/Languages/LanguagePicker";
 import "./DefaultLayout.css";
 import { DEFAULT_PADDINGS_CLASS_NAME } from "../constants";
 

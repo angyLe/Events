@@ -1,8 +1,8 @@
 import React from "react";
-import EventEditor from "../../Components/Events/EventEditor";
-import EventTranslations from "../../Components/Events/EventTranslation";
-import { getLanguagesWithEventTranslations } from "../../Modules/LanguagesWithEventTranslation";
 import { Segment, Header } from "semantic-ui-react";
+import EventEditor from "../../Features/Events/EventEditor";
+import EventTranslations from "../../Features/Events/EventTranslation";
+import { getLanguagesWithEventTranslations } from "../../Modules/LanguagesWithEventTranslation";
 import "./EventEditorPage.css";
 
 const languages = [
