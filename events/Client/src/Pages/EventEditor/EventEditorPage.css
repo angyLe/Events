@@ -1,0 +1,12 @@
+.Event-editor-page {
+    display:flex;
+    justify-content: center;
+    margin-bottom: 100px;
+    margin-top: 50px;
+    flex-wrap: wrap;
+}
+
+.Event-editor-page .ui.segment.Event-editor-page-form-segment,
+.Event-editor-page .ui.segment.Event-editor-page-translations-segment {
+    padding: 50px;
+}

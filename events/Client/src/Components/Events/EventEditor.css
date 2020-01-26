@@ -1,0 +1,27 @@
+.Event-Editor-Form {
+    text-align:left;
+}
+.Event-Editor-FirstPart {
+    display:flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+.Event-Editor-FirstPart > :first-child {
+    width: 35%;
+}
+ .Event-Editor-Form .Event-Editor-FirstPart div.Event-Editor-FirstPart-Inputs {
+    width: 63%;
+    display:block;
+}
+
+.Event-Editor-FirstPart .Event-Editor-FirstPart-Inputs > div {
+    width: 100%;
+}
+
+.Event-Editor-Form-Img-Field {
+    text-align: center;
+}
+
+.Event-Editor-Form-Img-Field button.Event-Editor-Form-File-Manager-Btn {
+    margin-top: 10px;
+}
