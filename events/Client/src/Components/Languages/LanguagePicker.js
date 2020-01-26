@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import LanguageFlag from "./LanguageFlag";
+import { SEMANTIC_UI_FLAGS } from "../../constants";
 
 const LanguagePicker = props => {
   const { activeLanguageIsoCode, languages } = props;
@@ -8,13 +9,11 @@ const LanguagePicker = props => {
   if (!languages || languages.length <= 1) return null;
   if (!activeLanguageIsoCode) return null;
 
-  const flagsName = { en: "america", nb: "norway" };
-
   const languagesResult = languages.map(element => (
     <LanguageFlag
       key={element.id}
       isActive={element.isoCode === activeLanguageIsoCode}
-      name={flagsName[element.isoCode]}
+      name={SEMANTIC_UI_FLAGS[element.isoCode]}
     />
   ));
 
