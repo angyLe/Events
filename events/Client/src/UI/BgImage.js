@@ -7,9 +7,10 @@ const BgImage = props => {
   if (!src) return null;
 
   const imgConfig = {
-    background: `url(${src})`,
+    backgroundImage: `url("${src}")`,
     backgroundSize: `cover`,
     backgroundPosition: `center`,
+    backgroundRepeat: `no-repeat`,
     width,
     height,
     backgroundColor: "lightGray"
