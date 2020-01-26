@@ -1,0 +1,9 @@
+.Event-translations {
+}
+
+.Language-with-event-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    justify-content: space-evenly;
+}
