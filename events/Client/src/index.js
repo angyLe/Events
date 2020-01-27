@@ -8,6 +8,9 @@ import "./index.css";
 import combineReducers from "./combineReducers";
 import * as serviceWorker from "./serviceWorker";
 import "semantic-ui-css/semantic.min.css";
+import { configureGlobalErrorHandler } from "./Utils/errorLogger";
+
+configureGlobalErrorHandler();
 
 const configureStore = initialState => {
   const composeEnhancers =
