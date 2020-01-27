@@ -1,19 +1,19 @@
 export const logError = ({
-  component,
-  message = "error message was not specified",
+  cmp,
+  msg = "error message was not specified",
   showInConsole = true
 }) => {
   if (showInConsole) {
     console.log(
-      `%c  App error in component: ${component} , message: ${message}`,
+      `%c  App error in component: ${cmp} , message: ${msg}`,
       `color: indianred`
     );
   }
 };
 
 export const configureGlobalErrorHandler = () => {
-  window.onerror = (message, source, lineno, colno) => {
-    const errorName = typeof error === 'object'? error.name: " no name";
+  window.onerror = (message, source, lineno, colno, error) => {
+    const errorName = typeof error === "object" ? error.name : " no name";
 
     console.log(
       `%c  Global error. \n 
