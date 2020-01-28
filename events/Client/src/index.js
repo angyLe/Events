@@ -9,8 +9,11 @@ import combineReducers from "./combineReducers";
 import * as serviceWorker from "./serviceWorker";
 import "semantic-ui-css/semantic.min.css";
 import { configureGlobalErrorHandler } from "./Utils/errorLogger";
+import { configureNotifications } from "./UI/Toast";
 
 configureGlobalErrorHandler();
+
+configureNotifications();
 
 const configureStore = initialState => {
   const composeEnhancers =

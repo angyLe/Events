@@ -1,13 +1,13 @@
 /* 
     Based on react-tostify: https://github.com/fkhadra/react-toastify
 */
-
 import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const configureNotifications = () => {
   toast.configure({
     position: "bottom-right",
-    style: { opacity: "0.7" }
+    style: { opacity: "0.8" }
   });
 };
 
