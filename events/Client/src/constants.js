@@ -10,3 +10,30 @@ export const SEMANTIC_UI_FLAGS = { en: "america", nb: "norway" };
 
 /* Icons from https://react.semantic-ui.com. They uses font awesome icons */
 export const ICON_NAMES = { pencil: "pencil", add: "add" };
+
+export const APP_SERVER_ERROR = () => {
+  const errors = {
+    1: "UnknownServerError",
+    2: "ValidationError",
+    10: "RecordNotFound"
+  };
+
+  const byId = id => {
+    return errors[id];
+  };
+
+  const byName = name => {
+    return errors.find(el => el === name);
+  };
+
+  return {
+    byId,
+    byName
+  };
+};
+
+export const FETCH_STATE = {
+  loading: "loading",
+  error: "error",
+  success: "success"
+};
