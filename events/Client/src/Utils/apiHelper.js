@@ -3,19 +3,21 @@ import { notifyError } from "../UI/Toast";
 import tr from "./translationHelper";
 import { APP_SERVER_ERROR } from "../constants";
 
-const httpGet = ({ url, onProgress }) => {
+export const httpGet = ({ url = "", onProgress }) => {
   return new Promise((resolve, reject) => {
-    const xhr = new XMLHttpRequest();
+    if (!url) reject(new Error("Url must be specified"));
 
+    const xhr = new XMLHttpRequest();
     xhr.open("GET", url, true);
     xhr.setRequestHeader("pragma", "no-cache");
 
-    xhr.onload = function() {
-      resolve(this);
+    xhr.onload = () => {
+      resolve(xhr);
     };
 
     xhr.onerror = e => {
-      logError({ cmp: "httpGet", msg: e.message });
+      const errorMessage = typeof e === "object" ? e.message : "";
+      logError({ cmp: "httpGet", msg: errorMessage });
       reject(new Error("Xhr error"));
     };
 
@@ -29,21 +31,21 @@ const httpGet = ({ url, onProgress }) => {
   });
 };
 
-const httpPost = ({ url, method, dataToSent, onProgress }) => {
+export const httpPost = ({ url, method, dataToSent, onProgress }) => {
   return new Promise((resolve, reject) => {
-    const xhr = new XMLHttpRequest();
+    if (!url) reject(new Error("Url must be specified"));
 
+    const xhr = new XMLHttpRequest();
     xhr.open(method, url, true);
     xhr.setRequestHeader("Content-Type", "application/json");
 
     xhr.onload = () => {
-      console.log(this);
-      console.log(this);
-      resolve(this);
+      resolve(xhr);
     };
-    // xhr error
+
     xhr.onerror = e => {
-      logError({ cmp: "httpPost", msg: e.message });
+      const errorMessage = typeof e === "object" ? e.message : "";
+      logError({ cmp: "httpPost", msg: errorMessage });
       reject(new Error("Xhr error"));
     };
 
@@ -57,27 +59,21 @@ const httpPost = ({ url, method, dataToSent, onProgress }) => {
 
 const parseResponse = ({ dataToParse }) => {
   let result = null;
-  console.log(dataToParse);
 
   try {
     result = JSON.parse(dataToParse);
-    console.log(JSON.parse(dataToParse));
   } catch (error) {
     result = null;
   }
-
-  console.log("result");
-  console.log(result);
   return result;
 };
 
-const handleServerError = (response, status) => {
-  console.log("handleServerError");
-
+export const handleServerError = (response, status) => {
   const returnObj = {};
   returnObj.data = null;
   returnObj.appErrorCode = null;
   returnObj.statusCode = status;
+  returnObj.errorMessage = "";
 
   // unauthorized
   if (status === 401) {
@@ -91,30 +87,30 @@ const handleServerError = (response, status) => {
       "Request404Failed",
       "Request failed with status 404"
     );
-    returnObj.errorMessage = tr(APP_SERVER_ERROR.byId(2), "Validation errors");
+    returnObj.errorMessage = error404transl;
     notifyError({
       message: error404transl
     });
+  } else if (status === 500) {
+    const parsedData = parseResponse({ dataToParse: response });
+    returnObj.data = parsedData;
+    returnObj.appErrorCode =
+      typeof parsedData === "object" && parsedData.errorCode
+        ? parsedData.errorCode
+        : 1;
+    const errorMessage = APP_SERVER_ERROR.byId(returnObj.appErrorCode);
+    returnObj.errorMessage = tr(errorMessage, errorMessage);
+    notifyError({ message: returnObj.errorMessage });
   } else {
-    let parsedData = null;
-    let errorCode = 1;
+    const errorMessageTranslation = tr(
+      "ServerErrorWithStatus",
+      `Server error with status: ${status}`
+    );
 
-    if (status === 500) {
-      parsedData = parseResponse({ dataToParse: response });
-      returnObj.data = parsedData;
-      returnObj.errorMessage = 
-      returnObj.appErrorCode = typeof parsedData === "object" ? parsedData.errorCode : 1;
-      errorCode = 
-    }
-
-    const errorMessage = APP_SERVER_ERROR[errorCode];
-    const errorMessageTranslation = tr(errorMessage, " Server error!");
-
-    console.log("errorMessageTranslation");
-    console.log(errorMessageTranslation);
-
+    returnObj.errorMessage = errorMessageTranslation;
     notifyError({ message: errorMessageTranslation });
   }
+
   return returnObj;
 };
 
@@ -135,17 +131,22 @@ const apiHelper = async args => {
   try {
     data = await apiFunc();
   } catch (error) {
-    logError({ cmp: "apiHelper", msg: error.message });
-    notifyError({ message: tr(`RequestFailed`, `Request failed.`) });
+    logError({
+      cmp: "apiHelper",
+      msg: `${error.message} . It can be because of server do not respond, CORS problem etc.`
+    });
+    notifyError({
+      message: tr(
+        `RequestFailed`,
+        `Request failed, probably because of problem with server.`
+      )
+    });
     return null;
   }
-  console.log("data");
-  console.log(data);
 
   const { response, status } = data;
-
-  console.log(status);
-  console.log(response);
+  console.log("data");
+  console.log(data);
 
   if (status === 200 || status === 204) {
     return parseResponse({ dataToParse: response });
