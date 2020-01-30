@@ -27,10 +27,6 @@ const Test = () => {
   return <div>Test</div>;
 };
 
-const Test2 = () => {
-  return <div>Test2</div>;
-};
-
 const Routes = () => {
   return (
     <Router>
