@@ -2,26 +2,28 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Event from "./Event";
 import "./Events.css";
+import { getObj, objIsEmpty } from "../../Utils/jsTypesHelper";
 
 // eslint-disable-next-line react/prefer-stateless-function
 export default class EventsList extends Component {
   render() {
     let { eventsList } = this.props;
 
-    eventsList = Array.isArray(eventsList) ? eventsList : [];
+    eventsList = getObj(eventsList);
 
     let eventsListResult = [];
-    if (eventsList.length > 0) {
-      eventsListResult = eventsList.map(element => (
-        <Event
-          key={element.id}
-          imgSrc={element.imgSrc}
-          title={element.title}
-          shortDescription={element.shortDescription}
-          price={element.price}
-          dateTime={element.dateTime}
-        />
-      ));
+
+    if (!objIsEmpty(eventsList)) {
+      eventsListResult = Object.keys(eventsList).map(el => {
+        const element = eventsList[el];
+        return (
+          <Event
+            key={element.id}
+            eventTranslationId={element.id}
+            eventId={element.eventId}
+          />
+        );
+      });
     }
 
     return (
@@ -84,5 +86,5 @@ EventsList.defaultProps = {
 };
 
 EventsList.propTypes = {
-  eventsList: PropTypes.instanceOf(Array)
+  eventsList: PropTypes.shape({})
 };
