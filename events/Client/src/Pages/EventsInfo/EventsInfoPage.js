@@ -5,24 +5,21 @@ import { withRouter } from "react-router-dom";
 import EventsList from "../../Features/Events/EventsList";
 import EventsDatePickerPanel from "../../Features/Events/EventDatepickerPanel";
 import {
-  fetchEventsFromServer,
-  selectEvents
-} from "../../Features/Events/EventsHandlers";
+  fetchEventTranslationsByLangIdFromServer,
+  selectEventTranslationsFetchState,
+  selectEventTranslations
+} from "../../Features/Events/EventTranslationHandlers";
 import "./EventsInfoPage.css";
+import FetchingState from "../../UI/FetchingState";
 
 // eslint-disable-next-line react/prefer-stateless-function
 export const EventsInfoPage = props => {
-  const { eventsList } = props;
+  const { eventsList, languageId, eventsListFetchState } = props;
   const { fetchEvents } = props;
 
-  console.log("eventsList");
-  console.log(eventsList);
-
   useEffect(() => {
-    console.log("effect");
-
     if (!eventsList) {
-      fetchEvents();
+      fetchEvents({ languageId });
     }
   });
 
@@ -32,31 +29,38 @@ export const EventsInfoPage = props => {
         <EventsDatePickerPanel />
       </div>
       <div>
-        <EventsList eventsList={eventsList} />
+        <FetchingState fetchState={eventsListFetchState}>
+          <EventsList eventsList={eventsList} />
+        </FetchingState>
       </div>
     </div>
   );
 };
 
 EventsInfoPage.defaultProps = {
-  eventsList: null
+  eventsList: null,
+  eventsListFetchState: null
 };
 
 EventsInfoPage.propTypes = {
-  eventsList: PropTypes.instanceOf(Array),
+  eventsList: PropTypes.shape({}),
+  languageId: PropTypes.number.isRequired,
+  eventsListFetchState: PropTypes.string,
   fetchEvents: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    eventsList: selectEvents(state)
+    eventsList: selectEventTranslations(state),
+    eventsListFetchState: selectEventTranslationsFetchState(state),
+    languageId: 1
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    fetchEvents: () => {
-      dispatch(fetchEventsFromServer());
+    fetchEvents: ({ languageId }) => {
+      dispatch(fetchEventTranslationsByLangIdFromServer({ languageId }));
     }
   };
 };
