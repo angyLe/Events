@@ -1,7 +1,10 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from "@reduxjs/toolkit";
-import apiHelper from "../../Utils/apiHelper";
+import { normalize } from "normalizr";
+import { apiHelper } from "../../Utils/apiHelper";
 import { FETCH_STATE } from "../../constants";
+import { eventsSchema } from "../../dataNormalization";
+import { getObj } from "../../Utils/jsTypesHelper";
 
 const initialState = {
   fetchState: null,
@@ -23,11 +26,11 @@ const eventsSlice = createSlice({
       state.fetchState = FETCH_STATE.error;
     },
     addEvent(state, action) {
-      const { event } = action.payload;
+      const event = action.payload;
       state.eventsList.push(event);
     },
     updateEvent(state, action) {
-      const { event } = action.payload;
+      const event = action.payload;
       state.eventsList[event.id] = event;
     },
     deleteEvent(state, action) {
@@ -36,20 +39,29 @@ const eventsSlice = createSlice({
   }
 });
 
-const {
+export const {
   getEventsStart,
   getEventsSuccess,
-  getEventsFailure
+  getEventsFailure,
+  addEvent,
+  updateEvent,
+  deleteEvent
 } = eventsSlice.actions;
 
 export default eventsSlice.reducer;
 
 /** SELECTORS */
-export const selectEvents = state => {
-  return state.events.eventsList;
-};
-export const selectFetchState = state => {
-  return state.fetchState;
+const selectSlice = state => getObj(state).events || {};
+
+export const selectEvents = state => selectSlice(state).eventsList;
+
+export const selectFetchState = state => selectSlice(state).fetchState;
+
+export const selectEventById = (state, props) => {
+  console.log("selectEvent");
+  console.log(state);
+  console.log(props);
+  return selectSlice(state).eventsList[props.eventId];
 };
 
 /** OPERATIONS */
@@ -58,14 +70,19 @@ export const fetchEventsFromServer = () => {
     dispatch(getEventsStart());
 
     return apiHelper({ url: "https://localhost:44376/api/event/GetAll" })
-      .then(data => {
-        console.log("fetchEvents success");
-        console.log(data);
-        dispatch(getEventsSuccess(data));
-        return data;
+      .then(events => {
+        const eventsResult = Array.isArray(events) ? events : [];
+
+        const normalizeData = normalize(eventsResult, [eventsSchema]);
+        const eventsNormalized =
+          normalizeData && normalizeData.entities
+            ? normalizeData.entities.events
+            : {};
+
+        dispatch(getEventsSuccess(eventsNormalized));
+        return normalizeData;
       })
       .catch(error => {
-        console.log(error);
         dispatch(getEventsFailure());
       });
   };
