@@ -13,12 +13,12 @@ import { DEFAULT_LANG } from "./constants";
 import PageNotFound from "./Pages/PageNotFound";
 import EventEditorPage from "./Pages/EventEditor/EventEditorPage";
 
-const renderWithLayout = (Component, Layout) => props => {
+const renderWithLayout = (Component, Layout, extraProps) => props => {
   if (!Layout) return <Component />;
 
   return (
-    <Layout {...props}>
-      <Component {...props} />
+    <Layout {...props} {...extraProps}>
+      <Component {...props} {...extraProps} />
     </Layout>
   );
 };
@@ -81,18 +81,30 @@ const Routes = () => {
 
             if (!isValidIsoCode) return redirectToDefaultLang;
 
+            const extraProps = {
+              currentLangId: isoCodeParam
+            };
+
             return (
               <>
                 <Switch>
                   <Route
                     exact
                     path={`${url}/`}
-                    component={renderWithLayout(EventsInfoPage, DefaultLayout)}
+                    component={renderWithLayout(
+                      EventsInfoPage,
+                      DefaultLayout,
+                      extraProps
+                    )}
                   />
 
                   <Route
                     path={`${url}/event/:id`}
-                    component={renderWithLayout(EventDetails, DefaultLayout)}
+                    component={renderWithLayout(
+                      EventDetails,
+                      DefaultLayout,
+                      extraProps
+                    )}
                   />
                   <Route component={renderWithLayout(PageNotFound, null)} />
                 </Switch>
