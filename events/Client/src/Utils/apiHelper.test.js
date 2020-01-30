@@ -1,4 +1,4 @@
-import apiHelper, { httpGet, httpPost, handleServerError } from "./apiHelper";
+import { httpGet, httpPost, handleServerError, apiHelper } from "./apiHelper";
 import * as dependency from "../constants";
 
 const createMockXHR = (responseJSON, readyState) => {

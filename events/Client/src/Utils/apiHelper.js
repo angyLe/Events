@@ -114,7 +114,8 @@ export const handleServerError = (response, status) => {
   return returnObj;
 };
 
-const apiHelper = async args => {
+export const apiHelper = async args => {
+
   const { url, method = "get", dataToSent = null, onProgress = null } = args;
 
   if (!url) {
@@ -145,8 +146,6 @@ const apiHelper = async args => {
   }
 
   const { response, status } = data;
-  console.log("data");
-  console.log(data);
 
   if (status === 200 || status === 204) {
     return parseResponse({ dataToParse: response });
@@ -155,5 +154,3 @@ const apiHelper = async args => {
   const errorData = handleServerError(response, status);
   throw errorData;
 };
-
-export default apiHelper;
