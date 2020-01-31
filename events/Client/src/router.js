@@ -12,6 +12,7 @@ import EventDetails from "./Pages/EventDetails/EventDetailsPage";
 import { DEFAULT_LANG } from "./constants";
 import PageNotFound from "./Pages/PageNotFound";
 import EventEditorPage from "./Pages/EventEditor/EventEditorPage";
+import RootAppPublic from "./Features/RootApp/RootAppPublic";
 
 const renderWithLayout = (Component, Layout, extraProps) => props => {
   if (!Layout) return <Component />;
@@ -25,6 +26,31 @@ const renderWithLayout = (Component, Layout, extraProps) => props => {
 
 const Test = () => {
   return <div>Test</div>;
+};
+
+const RoutesConfig = ({ currentLangCode, history }) => {
+  const navigate = url => {
+    console.log("url");
+    console.log(url);
+    console.log(history);
+
+    history.push({
+      pathname: `/${currentLangCode}/${url}`
+      //search: "?query=abc",
+    });
+
+    //history.push(`${currentLangCode}/${url}`);
+  };
+
+  const navigateToEventTranslation = ({ eventId }) => {
+    navigate(`event/${eventId}`);
+  };
+
+  const navigateToEventsList = () => {
+    navigate("");
+  };
+
+  return { navigateToEventTranslation, navigateToEventsList };
 };
 
 const Routes = () => {
@@ -67,6 +93,7 @@ const Routes = () => {
           path="/:lang"
           render={routeInfo => {
             const {
+              history,
               match: { url, params }
             } = routeInfo;
 
@@ -89,12 +116,18 @@ const Routes = () => {
 
             if (!isValidIsoCode) return redirectToDefaultLang;
 
+            const routesConfig = RoutesConfig({
+              currentLangCode: isoCodeParam,
+              history
+            });
+
             const extraProps = {
-              currentLangId: languageIds[isoCodeParam]
+              currentLangId: languageIds[isoCodeParam],
+              routesConfig
             };
 
             return (
-              <>
+              <RootAppPublic>
                 <Switch>
                   <Route
                     exact
@@ -116,7 +149,7 @@ const Routes = () => {
                   />
                   <Route component={renderWithLayout(PageNotFound, null)} />
                 </Switch>
-              </>
+              </RootAppPublic>
             );
           }}
         />
