@@ -6,7 +6,7 @@ import "./DefaultLayout.css";
 import { DEFAULT_PADDINGS_CLASS_NAME } from "../constants";
 
 const DefaultLayout = props => {
-  const { children, languages } = props;
+  const { children, currentLangId } = props;
   return (
     <div className="App">
       <header className={`App-header ${DEFAULT_PADDINGS_CLASS_NAME}`}>
@@ -14,7 +14,7 @@ const DefaultLayout = props => {
           <AppLogo />
           City events
         </div>
-        <LanguagePicker />
+        <LanguagePicker currentLangId={currentLangId} />
       </header>
       <div className={`App-main ${DEFAULT_PADDINGS_CLASS_NAME}`}>
         {children}
@@ -24,7 +24,8 @@ const DefaultLayout = props => {
 };
 
 DefaultLayout.propTypes = {
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
+  currentLangId: PropTypes.number.isRequired
 };
 
 export default DefaultLayout;
