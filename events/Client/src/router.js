@@ -77,12 +77,20 @@ const Routes = () => {
             if (!isoCodeParam) return redirectToDefaultLang;
 
             const isoCodes = ["nb", "en"];
+
+            /* TODO: Add temporary solution to pass language id as props. It must be
+            replaced later by retrieving data from languages array.
+            */
+            const languageIds = {
+              nb: 2,
+              en: 1
+            };
             const isValidIsoCode = isoCodes.includes(isoCodeParam);
 
             if (!isValidIsoCode) return redirectToDefaultLang;
 
             const extraProps = {
-              currentLangId: isoCodeParam
+              currentLangId: languageIds[isoCodeParam]
             };
 
             return (
