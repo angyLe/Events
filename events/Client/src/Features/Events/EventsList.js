@@ -7,20 +7,23 @@ import { getObj, objIsEmpty } from "../../Utils/jsTypesHelper";
 // eslint-disable-next-line react/prefer-stateless-function
 export default class EventsList extends Component {
   render() {
-    let { eventsList } = this.props;
+    const { eventsList, navigateToEvent } = this.props;
 
-    eventsList = getObj(eventsList);
+    const eventsListObj = getObj(eventsList);
 
     let eventsListResult = [];
 
     if (!objIsEmpty(eventsList)) {
-      eventsListResult = Object.keys(eventsList).map(el => {
-        const element = eventsList[el];
+      eventsListResult = Object.keys(eventsListObj).map(el => {
+        const element = eventsListObj[el];
         return (
           <Event
             key={element.id}
             eventTranslationId={element.id}
             eventId={element.eventId}
+            navigateToEvent={() =>
+              navigateToEvent({ eventId: element.eventId })
+            }
           />
         );
       });
@@ -86,5 +89,6 @@ EventsList.defaultProps = {
 };
 
 EventsList.propTypes = {
-  eventsList: PropTypes.shape({})
+  eventsList: PropTypes.shape({}),
+  navigateToEvent: PropTypes.func.isRequired
 };
