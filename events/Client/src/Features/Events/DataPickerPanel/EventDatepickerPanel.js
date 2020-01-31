@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import "./EventDatePickerPanel.css";
 import { Button } from "semantic-ui-react";
 import dayjs from "dayjs";
-import tr from "../../Utils/translationHelper";
+import tr from "../../../Utils/translationHelper";
 
 const EventsDatePickerPanel = props => {
   const { dateFrom, dateTo } = props;

@@ -2,12 +2,11 @@ import React from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
-import "./Events.css";
 import { Card } from "semantic-ui-react";
 import dayjs from "dayjs";
-import EventPrice from "./EventPrice";
+import EventPrice from "../EventPrice/EventPrice";
 import "./Event.css";
-import selectEventWithTranslation from "./SelectEventWithTranslation";
+import selectEventWithTranslation from "../SelectEventWithTranslation";
 
 export const Event = props => {
   const { event, navigateToEvent } = props;

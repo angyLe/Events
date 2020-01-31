@@ -2,8 +2,8 @@ import React, { useEffect } from "react";
 import { PropTypes } from "prop-types";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import EventsList from "../../Features/Events/EventsList";
-import EventsDatePickerPanel from "../../Features/Events/EventDatepickerPanel";
+import EventsList from "../../Features/Events/List/EventsList";
+import EventsDatePickerPanel from "../../Features/Events/DataPickerPanel/EventDatepickerPanel";
 import {
   fetchEventTranslationsFromServer,
   selectors as eventTranslationSelectors

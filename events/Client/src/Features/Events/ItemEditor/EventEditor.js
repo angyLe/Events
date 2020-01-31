@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Form } from "semantic-ui-react";
-import tr from "../../Utils/translationHelper";
-import ImageEditor from "../../UI/ImageEditor";
+import tr from "../../../Utils/translationHelper";
+import ImageEditor from "../../../UI/ImageEditor";
 import "./EventEditor.css";
 
 const EventEditor = props => {

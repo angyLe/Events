@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Event from "./Event";
+import Event from "../Item/Event";
 import "./Events.css";
-import { getObj, objIsEmpty } from "../../Utils/jsTypesHelper";
+import { getObj, objIsEmpty } from "../../../Utils/jsTypesHelper";
 
 // eslint-disable-next-line react/prefer-stateless-function
 export default class EventsList extends Component {

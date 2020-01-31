@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Flag, Button } from "semantic-ui-react";
-import tr from "../../Utils/translationHelper";
-import { SEMANTIC_UI_FLAGS, ICON_NAMES } from "../../constants";
+import tr from "../../../Utils/translationHelper";
+import { SEMANTIC_UI_FLAGS, ICON_NAMES } from "../../../constants";
 import "./EventTranslations.css";
 
 const EventTranslations = props => {
