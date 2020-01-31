@@ -5,23 +5,29 @@ import { withRouter } from "react-router-dom";
 import EventsList from "../../Features/Events/EventsList";
 import EventsDatePickerPanel from "../../Features/Events/EventDatepickerPanel";
 import {
-  fetchEventTranslationsByLangIdFromServer,
-  selectEventTranslationsFetchState,
-  selectEventTranslations
+  fetchEventTranslationsFromServer,
+  selectors as eventTranslationSelectors
 } from "../../Features/Events/EventTranslationHandlers";
 import "./EventsInfoPage.css";
 import FetchingState from "../../UI/FetchingState";
 
 // eslint-disable-next-line react/prefer-stateless-function
 export const EventsInfoPage = props => {
-  const { eventsList, languageId, eventsListFetchState } = props;
+  const {
+    eventsList,
+    currentLangId,
+    eventsListFetchState,
+    routesConfig
+  } = props;
   const { fetchEvents } = props;
 
   useEffect(() => {
-    if (!eventsList) {
-      fetchEvents({ languageId });
-    }
-  });
+    fetchEvents({ languageId: currentLangId });
+  }, [currentLangId]);
+
+  const navigateToEvent = obj => {
+    routesConfig.navigateToEventTranslation(obj);
+  };
 
   return (
     <div className="Events-Info-Wrapper">
@@ -30,7 +36,10 @@ export const EventsInfoPage = props => {
       </div>
       <div>
         <FetchingState fetchState={eventsListFetchState}>
-          <EventsList eventsList={eventsList} />
+          <EventsList
+            eventsList={eventsList}
+            navigateToEvent={navigateToEvent}
+          />
         </FetchingState>
       </div>
     </div>
@@ -44,23 +53,31 @@ EventsInfoPage.defaultProps = {
 
 EventsInfoPage.propTypes = {
   eventsList: PropTypes.shape({}),
-  languageId: PropTypes.number.isRequired,
+  currentLangId: PropTypes.number.isRequired,
   eventsListFetchState: PropTypes.string,
-  fetchEvents: PropTypes.func.isRequired
+  fetchEvents: PropTypes.func.isRequired,
+  routesConfig: PropTypes.shape({
+    navigateToEventTranslation: PropTypes.func.isRequired
+  }).isRequired
 };
 
 const mapStateToProps = (state, ownProps) => {
+  const { currentLangId, routesConfig } = ownProps;
+
   return {
-    eventsList: selectEventTranslations(state),
-    eventsListFetchState: selectEventTranslationsFetchState(state),
-    languageId: 1
+    eventsList: eventTranslationSelectors.selectEventTranslations(state),
+    eventsListFetchState: eventTranslationSelectors.selectEventTranslationsFetchState(
+      state
+    ),
+    currentLangId,
+    routesConfig
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     fetchEvents: ({ languageId }) => {
-      dispatch(fetchEventTranslationsByLangIdFromServer({ languageId }));
+      dispatch(fetchEventTranslationsFromServer({ languageId }));
     }
   };
 };
