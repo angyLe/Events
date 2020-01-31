@@ -1,5 +1,4 @@
 import React from "react";
-import { createSelector } from "@reduxjs/toolkit";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
@@ -8,18 +7,10 @@ import { Card } from "semantic-ui-react";
 import dayjs from "dayjs";
 import EventPrice from "./EventPrice";
 import "./Event.css";
-import { selectEventTranslationById } from "./EventTranslationHandlers";
-import { selectEventById } from "./EventsHandlers";
+import selectEventWithTranslation from "./SelectEventWithTranslation";
 
-export const selectEventWithTranslation = createSelector(
-  [selectEventTranslationById, selectEventById],
-  (eventTranslation, event) => {
-    return { ...eventTranslation, ...event };
-  }
-);
-
-const Event = props => {
-  const { event } = props;
+export const Event = props => {
+  const { event, navigateToEvent } = props;
 
   const { imgSrc, title, shortDescription, price, dateTimeFrom } = event;
 
@@ -30,6 +21,7 @@ const Event = props => {
         href=""
         onClick={e => {
           e.preventDefault();
+          navigateToEvent();
         }}
         className="Event-element-card"
         image={imgSrc || ""}
@@ -47,25 +39,27 @@ const Event = props => {
 };
 
 Event.defaultProps = {
-  event: {
-    imgSrc:
-      "https://cdn.pixabay.com/photo/2018/05/31/12/02/celebration-3443810_960_720.jpg"
-  }
+  event: {}
 };
 
 Event.propTypes = {
   event: PropTypes.shape({
+    id: PropTypes.number,
     imgSrc: PropTypes.string,
     title: PropTypes.string.isRequired,
     shortDescription: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
     dateTimeFrom: PropTypes.string.isRequired
-  })
+  }),
+  navigateToEvent: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state, ownProps) => {
+  const { navigateToEvent } = ownProps;
+
   return {
-    event: selectEventWithTranslation(state, ownProps)
+    event: selectEventWithTranslation(state, ownProps),
+    navigateToEvent
   };
 };
 

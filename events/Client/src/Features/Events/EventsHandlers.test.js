@@ -54,25 +54,96 @@ describe("events reducer", () => {
   it("should handle addEvent", () => {
     expect(
       events(
-        { eventsList: [] },
+        { eventsList: {} },
         {
           type: addEvent.type,
           payload: { id: 1, title: "title" }
         }
       )
-    ).toEqual({ eventsList: [{ id: 1, title: "title" }] });
+    ).toEqual({ eventsList: { 1: { id: 1, title: "title" } } });
   });
 
   it("should handle updateEvent", () => {
     expect(
       events(
-        { eventsList: [{ id: 1, title: "title" }] },
+        { eventsList: { 1: { id: 1, title: "title" } } },
         {
           type: updateEvent.type,
           payload: { id: 1, title: "changed title" }
         }
       )
-    ).toEqual([{ id: 1, title: "changed title" }]);
+    ).toEqual({ eventsList: { 1: { id: 1, title: "changed title" } } });
+  });
+
+  it("should not update event if id == null", () => {
+    expect(
+      events(
+        { eventsList: { 1: { id: 1, title: "title" } } },
+        {
+          type: updateEvent.type,
+          payload: { id: null, title: "changed title" }
+        }
+      )
+    ).toEqual({ eventsList: { 1: { id: 1, title: "title" } } });
+  });
+
+  it("should not add event which is not exist when updateEvent", () => {
+    expect(
+      events(
+        { eventsList: { 1: { id: 1, title: "title" } } },
+        {
+          type: updateEvent.type,
+          payload: { id: 2, title: "changed title" }
+        }
+      )
+    ).toEqual({
+      eventsList: {
+        1: { id: 1, title: "title" }
+      }
+    });
+  });
+
+  it("should deleteEvent", () => {
+    expect(
+      events(
+        {
+          eventsList: {
+            1: { id: 1, title: "title" },
+            2: { id: 2, title: "2 title" }
+          }
+        },
+        {
+          type: deleteEvent.type,
+          payload: 1
+        }
+      )
+    ).toEqual({
+      eventsList: {
+        2: { id: 2, title: "2 title" }
+      }
+    });
+  });
+
+  it("should not deleteEvent if it was not found", () => {
+    expect(
+      events(
+        {
+          eventsList: {
+            1: { id: 1, title: "title" },
+            2: { id: 2, title: "2 title" }
+          }
+        },
+        {
+          type: deleteEvent.type,
+          payload: 3
+        }
+      )
+    ).toEqual({
+      eventsList: {
+        1: { id: 1, title: "title" },
+        2: { id: 2, title: "2 title" }
+      }
+    });
   });
 });
 

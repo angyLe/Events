@@ -5,6 +5,7 @@ import { apiHelper } from "../../Utils/apiHelper";
 import { FETCH_STATE } from "../../constants";
 import { eventsSchema } from "../../dataNormalization";
 import { getObj } from "../../Utils/jsTypesHelper";
+import { resetAction } from "../RootApp/RootAppHandlers";
 
 const initialState = {
   fetchState: null,
@@ -27,16 +28,23 @@ const eventsSlice = createSlice({
     },
     addEvent(state, action) {
       const event = action.payload;
-      state.eventsList.push(event);
+      if (event && event.id) state.eventsList[event.id] = event;
     },
     updateEvent(state, action) {
       const event = action.payload;
-      state.eventsList[event.id] = event;
+      const { id } = event;
+      if (id && state.eventsList[id]) {
+        state.eventsList[id] = event;
+      }
     },
     deleteEvent(state, action) {
-      delete state.eventsList[action.payload.id];
+      if (action.payload) delete state.eventsList[action.payload];
     }
-  }
+  },
+  extraReducers: builder =>
+    builder.addCase(resetAction, (state, action) => {
+      return initialState;
+    })
 });
 
 export const {
@@ -53,15 +61,12 @@ export default eventsSlice.reducer;
 /** SELECTORS */
 const selectSlice = state => getObj(state).events || {};
 
-export const selectEvents = state => selectSlice(state).eventsList;
+export const selectEvents = state => selectSlice(state).eventsList || {};
 
 export const selectFetchState = state => selectSlice(state).fetchState;
 
 export const selectEventById = (state, props) => {
-  console.log("selectEvent");
-  console.log(state);
-  console.log(props);
-  return selectSlice(state).eventsList[props.eventId];
+  return selectEvents(state)[props.eventId] || {};
 };
 
 /** OPERATIONS */
