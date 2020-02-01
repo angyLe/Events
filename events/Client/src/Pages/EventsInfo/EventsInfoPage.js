@@ -23,6 +23,7 @@ export const EventsInfoPage = props => {
 
   useEffect(() => {
     fetchEvents({ languageId: currentLangId });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentLangId]);
 
   const navigateToEvent = obj => {
