@@ -65,7 +65,8 @@ EventDetailsPage.propTypes = {
 
 const mapStateToProps = (state, ownProps) => {
   const { currentLangId, routesConfig, match } = ownProps;
-  const eventId = match && match.params ? match.params.id : 0;
+  const eventId =
+    match && match.params && match.params.id ? parseInt(match.params.id) : 0;
 
   return {
     eventTranslationsFetchState: eventTranslationSelectors.selectEventTranslationsFetchState(
