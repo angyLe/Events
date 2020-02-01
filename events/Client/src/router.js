@@ -30,16 +30,10 @@ const Test = () => {
 
 const RoutesConfig = ({ currentLangCode, history }) => {
   const navigate = url => {
-    console.log("url");
-    console.log(url);
-    console.log(history);
-
     history.push({
       pathname: `/${currentLangCode}/${url}`
       //search: "?query=abc",
     });
-
-    //history.push(`${currentLangCode}/${url}`);
   };
 
   const navigateToEventTranslation = ({ eventId }) => {
