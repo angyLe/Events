@@ -13,6 +13,7 @@ import { DEFAULT_LANG } from "./constants";
 import PageNotFound from "./Pages/PageNotFound";
 import EventEditorPage from "./Pages/EventEditor/EventEditorPage";
 import RootAppPublic from "./Features/RootApp/RootAppPublic";
+import AdminLayout from "./Layouts/AdminLayout";
 
 const renderWithLayout = (Component, Layout, extraProps) => props => {
   if (!Layout) return <Component />;
@@ -59,11 +60,11 @@ const Routes = () => {
                 <Route
                   exact
                   path={`${url}/`}
-                  component={renderWithLayout(Test, DefaultLayout)}
+                  component={renderWithLayout(Test, AdminLayout)}
                 />
                 <Route
                   path={`${url}/eventEditor/:id?`}
-                  component={renderWithLayout(EventEditorPage, DefaultLayout)}
+                  component={renderWithLayout(EventEditorPage, AdminLayout)}
                 />
                 <Route component={renderWithLayout(PageNotFound, null)} />
               </Switch>

@@ -1,21 +1,17 @@
 import React from "react";
 import PropTypes from "prop-types";
-import AppLogo from "../UI/Logo";
 import LanguagePicker from "../Features/Languages/LanguagePicker";
 import "./DefaultLayout.css";
 import { DEFAULT_PADDINGS_CLASS_NAME } from "../constants";
+import AppHeader from "../UI/AppHeader";
 
 const DefaultLayout = props => {
   const { children, currentLangId } = props;
   return (
     <div className="App">
-      <header className={`App-header ${DEFAULT_PADDINGS_CLASS_NAME}`}>
-        <div className="App-name">
-          <AppLogo />
-          City events
-        </div>
+      <AppHeader appName="City events">
         <LanguagePicker currentLangId={currentLangId} />
-      </header>
+      </AppHeader>
       <div className={`App-main ${DEFAULT_PADDINGS_CLASS_NAME}`}>
         {children}
       </div>
