@@ -11,6 +11,7 @@ import {
 } from "../../Features/Events/EventTranslationHandlers";
 import FetchingState from "../../UI/FetchingState";
 import selectEventWithTranslation from "../../Features/Events/SelectEventWithTranslation";
+import { getParam } from "../../Utils/reduxHelpers";
 
 export const EventDetailsPage = props => {
   const {
@@ -64,9 +65,9 @@ EventDetailsPage.propTypes = {
 };
 
 const mapStateToProps = (state, ownProps) => {
-  const { currentLangId, routesConfig, match } = ownProps;
-  const eventId =
-    match && match.params && match.params.id ? parseInt(match.params.id) : 0;
+  const { currentLangId, routesConfig } = ownProps;
+  let eventId = getParam(ownProps, "id");
+  eventId = eventId ? parseInt(eventId, 10) : 0;
 
   return {
     eventTranslationsFetchState: eventTranslationSelectors.selectEventTranslationsFetchState(
