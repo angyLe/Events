@@ -4,9 +4,12 @@ import { FETCH_STATE } from "../constants";
 import tr from "../Utils/translationHelper";
 
 const FetchingState = props => {
-  const { fetchState, children } = props;
+  const { fetchState, children, showLoadingOnInit } = props;
 
-  if (fetchState === FETCH_STATE.loading) {
+  if (
+    fetchState === FETCH_STATE.loading ||
+    (fetchState === null && showLoadingOnInit)
+  ) {
     return <>{tr("FetchLoading", "Loading...")}</>;
   }
 
@@ -18,10 +21,12 @@ const FetchingState = props => {
 };
 
 FetchingState.defaultProps = {
-  fetchState: null
+  fetchState: null,
+  showLoadingOnInit: false
 };
 
 FetchingState.propTypes = {
+  showLoadingOnInit: PropTypes.bool,
   fetchState: PropTypes.string,
   children: PropTypes.node.isRequired
 };
