@@ -1,11 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from "@reduxjs/toolkit";
-import { batch } from "react-redux";
-import { normalize } from "normalizr";
-import { apiHelper } from "../../Utils/apiHelper";
 import { FETCH_STATE } from "../../constants";
-import { eventTranslationSchema } from "../../dataNormalization";
-import { getEventsSuccess } from "./EventsHandlers";
 import { getObj } from "../../Utils/jsTypesHelper";
 import { resetAction } from "../RootApp/RootAppHandlers";
 
@@ -78,58 +73,3 @@ export const selectors = {
 };
 
 /** END SELECTORS */
-
-/** OPERATIONS */
-const createUrlToFetchEventTranslations = obj => {
-  const { languageId, eventId } = obj || {};
-
-  const urlMainPath = `https://localhost:44376/api/event/GetEventTranslations`;
-  const withLanguage = `languageId=${languageId}`;
-  const withEvent = `eventId=${eventId}`;
-  let urlQueryPath = ``;
-
-  if (languageId != null && eventId != null) {
-    urlQueryPath = `?${withLanguage}&${withEvent}`;
-  } else if (languageId != null) {
-    urlQueryPath = `?${withLanguage}`;
-  } else if (eventId != null) {
-    urlQueryPath = `?${withEvent}`;
-  }
-
-  const url = `${urlMainPath}${urlQueryPath}`;
-  return url;
-};
-
-export const fetchEventTranslationsFromServer = ({
-  languageId = null,
-  eventId = null
-}) => {
-  // eslint-disable-next-line no-unused-vars
-  return (dispatch, getState) => {
-    dispatch(getEventsTranslationsStart());
-
-    const url = createUrlToFetchEventTranslations({ languageId, eventId });
-
-    return apiHelper({ url })
-      .then(events => {
-        const eventsResult = Array.isArray(events) ? events : [];
-        const normalizeData = normalize(eventsResult, [eventTranslationSchema]);
-        const entities =
-          normalizeData && normalizeData.entities ? normalizeData.entities : {};
-        batch(() => {
-          dispatch(getEventsTranslationsSuccess(entities.eventTranslations));
-          dispatch(getEventsSuccess(entities.event));
-        });
-
-        return normalizeData;
-      })
-      .catch(() => {
-        dispatch(getEventsTranslationsFailure());
-      });
-  };
-};
-
-export const operations = {
-  fetchEventTranslationsFromServer,
-  createUrlToFetchEventTranslations
-};

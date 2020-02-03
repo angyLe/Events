@@ -5,13 +5,11 @@ import { connect } from "react-redux";
 import EventDetails from "../../Features/Events/Item/EventDetails";
 import tr from "../../Utils/translationHelper";
 import "./EventDetailsPage.css";
-import {
-  selectors as eventTranslationSelectors,
-  fetchEventTranslationsFromServer
-} from "../../Features/Events/EventTranslationHandlers";
+import { selectors as eventTranslationSelectors } from "../../Features/Events/EventTranslationHandlers";
 import FetchingState from "../../UI/FetchingState";
 import selectEventWithTranslation from "../../Features/Events/SelectEventWithTranslation";
 import { getParam } from "../../Utils/reduxHelpers";
+import { fetchEventTranslationsFromServer } from "../../Features/Events/EventApi";
 
 export const EventDetailsPage = props => {
   const {

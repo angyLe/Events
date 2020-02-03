@@ -4,12 +4,10 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import EventsList from "../../Features/Events/List/EventsList";
 import EventsDatePickerPanel from "../../Features/Events/DataPickerPanel/EventDatepickerPanel";
-import {
-  fetchEventTranslationsFromServer,
-  selectors as eventTranslationSelectors
-} from "../../Features/Events/EventTranslationHandlers";
+import { selectors as eventTranslationSelectors } from "../../Features/Events/EventTranslationHandlers";
 import "./EventsInfoPage.css";
 import FetchingState from "../../UI/FetchingState";
+import { fetchEventTranslationsFromServer } from "../../Features/Events/EventApi";
 
 // eslint-disable-next-line react/prefer-stateless-function
 export const EventsInfoPage = props => {
@@ -36,7 +34,7 @@ export const EventsInfoPage = props => {
         <EventsDatePickerPanel />
       </div>
       <div>
-        <FetchingState fetchState={eventsListFetchState}>
+        <FetchingState showLoadingOnInit fetchState={eventsListFetchState}>
           <EventsList
             eventsList={eventsList}
             navigateToEvent={navigateToEvent}

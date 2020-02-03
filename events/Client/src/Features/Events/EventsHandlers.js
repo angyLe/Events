@@ -1,9 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from "@reduxjs/toolkit";
-import { normalize } from "normalizr";
-import { apiHelper } from "../../Utils/apiHelper";
 import { FETCH_STATE } from "../../constants";
-import { eventsSchema } from "../../dataNormalization";
 import { getObj } from "../../Utils/jsTypesHelper";
 import { resetAction } from "../RootApp/RootAppHandlers";
 
@@ -69,26 +66,3 @@ export const selectEventById = (state, props) => {
   return selectEvents(state)[props.eventId] || {};
 };
 
-/** OPERATIONS */
-export const fetchEventsFromServer = () => {
-  return (dispatch, getState) => {
-    dispatch(getEventsStart());
-
-    return apiHelper({ url: "https://localhost:44376/api/event/GetAll" })
-      .then(events => {
-        const eventsResult = Array.isArray(events) ? events : [];
-
-        const normalizeData = normalize(eventsResult, [eventsSchema]);
-        const eventsNormalized =
-          normalizeData && normalizeData.entities
-            ? normalizeData.entities.events
-            : {};
-
-        dispatch(getEventsSuccess(eventsNormalized));
-        return normalizeData;
-      })
-      .catch(error => {
-        dispatch(getEventsFailure());
-      });
-  };
-};
