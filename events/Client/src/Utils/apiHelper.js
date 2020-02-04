@@ -80,7 +80,8 @@ export const handleServerError = (response, status) => {
     // TODO: redirect to login page with: window.location = "/Account/Login";
     window.location = "/";
   } else if (status === 400) {
-    returnObj.data = parseResponse({ dataToParse: response });
+    const validErrors = parseResponse({ dataToParse: response });
+    returnObj.data = validErrors ? validErrors.validationErrors : {};
     returnObj.errorMessage = tr(APP_SERVER_ERROR.byId(2), "Validation errors");
   } else if (status === 404) {
     const error404transl = tr(
@@ -115,34 +116,30 @@ export const handleServerError = (response, status) => {
 };
 
 export const apiHelper = async args => {
-
   const { url, method = "get", dataToSent = null, onProgress = null } = args;
-
-  if (!url) {
-    logError({ cmp: "apiHelper", msg: "Url param is not defined" });
-    return null;
-  }
 
   const apiFunc =
     method === "get"
       ? httpGet.bind(this, { url, dataToSent, onProgress })
-      : httpPost.bind(this, url, method, dataToSent);
+      : httpPost.bind(this, { url, method, dataToSent });
 
   let data = null;
+
   try {
     data = await apiFunc();
   } catch (error) {
     logError({
       cmp: "apiHelper",
-      msg: `${error.message} . It can be because of server do not respond, CORS problem etc.`
+      msg: `error.message =${error.message}. Additional custom message: It can be because of server do not respond, CORS problem etc.`
     });
     notifyError({
       message: tr(
         `RequestFailed`,
-        `Request failed, probably because of problem with server.`
+        `Request failed, probably because of problem with server. Technical information: ${error.message} `
       )
     });
-    return null;
+
+    throw new Error(error);
   }
 
   const { response, status } = data;
@@ -152,5 +149,6 @@ export const apiHelper = async args => {
   }
 
   const errorData = handleServerError(response, status);
+
   throw errorData;
 };
