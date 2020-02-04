@@ -1,31 +1,50 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Form } from "semantic-ui-react";
+import { Form, Message } from "semantic-ui-react";
+import "flatpickr/dist/themes/material_green.css";
+import Flatpickr from "react-flatpickr";
 import tr from "../../../Utils/translationHelper";
 import ImageEditor from "../../../UI/ImageEditor";
 import "./EventEditor.css";
+import { SAVING_STATE } from "../../../constants";
+import { checkIfValid } from "../../../Utils/validationHelper";
 
 const EventEditor = props => {
   const {
-    eventId,
+    eventFormFields,
+    eventSavingState,
+    saveEvent,
+    updateEventTranslation,
+    updateEvent,
+    validationErrors
+  } = props;
+  const {
     imgSrc,
     title,
     shortDescription,
     text,
-    price,
+    price = 0,
     dateTimeFrom,
     dateTimeTo,
     priceDetails,
     website,
     address,
     phone
-  } = props;
+  } = eventFormFields;
 
   return (
     <Form noValidate className="Event-Editor-Form">
       <div className="Event-Editor-FirstPart">
         <Form.Field className="Event-Editor-Form-Img-Field">
-          <ImageEditor imageSrc={imgSrc} />
+          <ImageEditor
+            onFileChosen={file =>
+              updateEventTranslation({
+                value: file.id,
+                property: "imageId"
+              })
+            }
+            imageSrc={imgSrc}
+          />
         </Form.Field>
 
         <div className="Event-Editor-FirstPart-Inputs">
@@ -36,32 +55,56 @@ const EventEditor = props => {
               name="title"
               value={title || ""}
               required
-              maxLength="10"
-              error={false}
-              onChange={(e, obj) => console.log(obj)}
+              maxLength="20"
+              error={checkIfValid({
+                validationErrors,
+                propName: "title"
+              })}
+              onChange={(e, obj) => {
+                updateEventTranslation({
+                  value: obj.value,
+                  property: "title"
+                });
+              }}
             />
           </Form.Field>
 
-          <Form.Field>
-            <Form.Input
-              type="datetime-local"
-              required
-              label={tr("EventDateTimeFrom", "Event starts (day, time)")}
-              name="dateTimeFrom"
+          <Form.Field
+            required
+            error={checkIfValid({
+              validationErrors,
+              propName: "dateTimeFrom"
+            })}
+          >
+            <label>{tr("EventDateTimeFrom", "Event starts (day, time)")}</label>
+            <Flatpickr
+              data-enable-time
               value={dateTimeFrom}
-              error={false}
-              onChange={(e, obj) => console.log(obj)}
+              onChange={(selectedDates, dateStr, instance) => {
+                updateEvent({
+                  value: dateStr,
+                  property: "dateTimeFrom"
+                });
+              }}
             />
           </Form.Field>
 
-          <Form.Field>
-            <Form.Input
-              type="datetime-local"
-              label={tr("EventDateTimeTo", "Event ends (day, time)")}
-              name="dateTimeTo"
+          <Form.Field
+            error={checkIfValid({
+              validationErrors,
+              propName: "dateTimeTo"
+            })}
+          >
+            <label>{tr("EventDateTimeTo", "Event ends (day, time)")}</label>
+            <Flatpickr
+              data-enable-time
               value={dateTimeTo}
-              error={false}
-              onChange={(e, obj) => console.log(obj)}
+              onChange={(selectedDates, dateStr, instance) => {
+                updateEvent({
+                  value: dateStr,
+                  property: "dateTimeTo"
+                });
+              }}
             />
           </Form.Field>
         </div>
@@ -71,13 +114,21 @@ const EventEditor = props => {
         <Form.Input
           type="number"
           step="10"
-          min="0"
+          min="1"
           placeholder="100"
           label={tr("EventPriceLabel", "Price (NOK)")}
           name="price"
           value={price}
-          error={false}
-          onChange={(e, obj) => console.log(obj)}
+          error={checkIfValid({
+            validationErrors,
+            propName: "price"
+          })}
+          onChange={(e, obj) => {
+            updateEvent({
+              value: obj.value,
+              property: "price"
+            });
+          }}
         />
       </Form.Field>
       <Form.Field>
@@ -90,8 +141,16 @@ const EventEditor = props => {
           label={tr("EventPriceDetailsLabel", "Price details")}
           name="priceDetails"
           value={priceDetails || ""}
-          error={false}
-          onChange={(e, obj) => console.log(obj)}
+          error={checkIfValid({
+            validationErrors,
+            propName: "priceDetails"
+          })}
+          onChange={(e, obj) => {
+            updateEventTranslation({
+              value: obj.value,
+              property: "priceDetails"
+            });
+          }}
         />
       </Form.Field>
       <Form.Field>
@@ -101,8 +160,16 @@ const EventEditor = props => {
           name="address"
           required
           value={address || ""}
-          error={false}
-          onChange={(e, obj) => console.log(obj)}
+          error={checkIfValid({
+            validationErrors,
+            propName: "address"
+          })}
+          onChange={(e, obj) => {
+            updateEvent({
+              value: obj.value,
+              property: "address"
+            });
+          }}
         />
       </Form.Field>
 
@@ -113,8 +180,16 @@ const EventEditor = props => {
           label={tr("EventWebsiteLabel", "Website")}
           name="website"
           value={website || ""}
-          error={false}
-          onChange={(e, obj) => console.log(obj)}
+          error={checkIfValid({
+            validationErrors,
+            propName: "website"
+          })}
+          onChange={(e, obj) => {
+            updateEvent({
+              value: obj.value,
+              property: "website"
+            });
+          }}
         />
       </Form.Field>
 
@@ -124,9 +199,18 @@ const EventEditor = props => {
           placeholder={tr("EventPhonePlaceholder", "xxxxxxxx")}
           label={tr("EventPhoneLabel", "Phone number")}
           name="phone"
+          maxLength="8"
           value={phone || ""}
-          error={false}
-          onChange={(e, obj) => console.log(obj)}
+          error={checkIfValid({
+            validationErrors,
+            propName: "phone"
+          })}
+          onChange={(e, obj) => {
+            updateEvent({
+              value: obj.value,
+              property: "phone"
+            });
+          }}
         />
       </Form.Field>
 
@@ -138,8 +222,16 @@ const EventEditor = props => {
           name="shortDescription"
           value={shortDescription || ""}
           required
-          error={false}
-          onChange={(e, obj) => console.log(obj)}
+          error={checkIfValid({
+            validationErrors,
+            propName: "shortDescription"
+          })}
+          onChange={(e, obj) => {
+            updateEventTranslation({
+              value: obj.value,
+              property: "shortDescription"
+            });
+          }}
         />
       </Form.Field>
 
@@ -150,53 +242,62 @@ const EventEditor = props => {
           name="text"
           required
           value={text || ""}
-          error={false}
-          onChange={(e, obj) => console.log(obj)}
+          error={checkIfValid({
+            validationErrors,
+            propName: "text"
+          })}
+          onChange={(e, obj) => {
+            updateEventTranslation({ value: obj.value, property: "text" });
+          }}
         />
       </Form.Field>
-      <Form.Button content="Submit" floated="right" />
+
+      <Message
+        success
+        header="Form Completed"
+        content="You're all signed up for the newsletter"
+      />
+
+      <Form.Button
+        onClick={saveEvent}
+        loading={eventSavingState === SAVING_STATE.saving}
+        positive={false}
+        negative={false}
+        disabled={eventSavingState === SAVING_STATE.saving}
+        primary
+        content={tr("SubmitButton", "Submit")}
+        floated="right"
+      />
     </Form>
   );
 };
 
 EventEditor.defaultProps = {
-  eventId: null,
-  imgSrc:
-    "https://cdn.pixabay.com/photo/2018/05/31/12/02/celebration-3443810_960_720.jpg",
-  title: "",
-  shortDescription: "",
-  text: `It is a long established fact that a reader will be distracted by the 
-    readable content of a page when looking at its layout. 
-    The point of using Lorem Ipsum is that it has a more-or-less normal 
-    distribution of letters, as opposed to using 'Content here, content here', 
-    making it look like readable English. Many desktop publishing packages 
-    and web page editors now use Lorem Ipsum as their default model text, 
-    and a search for 'lorem ipsum' will uncover many web sites still in their infancy. 
-    Various versions have evolved over the years, sometimes by accident, sometimes 
-    on purpose (injected humour and the like).
-    `,
-  price: undefined,
-  priceDetails: "",
-  dateTimeFrom: "2009-10-14T19:00:00", // "2009-10-14T19:00:00"
-  dateTimeTo: "2009-10-14T19:00:00",
-  website: "",
-  address: "",
-  phone: ""
+  eventFormFields: {},
+  eventSavingState: null,
+  validationErrors: null
 };
 
 EventEditor.propTypes = {
-  eventId: PropTypes.number,
-  imgSrc: PropTypes.string,
-  title: PropTypes.string,
-  shortDescription: PropTypes.string,
-  text: PropTypes.string,
-  price: PropTypes.number,
-  priceDetails: PropTypes.string,
-  dateTimeTo: PropTypes.string,
-  dateTimeFrom: PropTypes.string,
-  website: PropTypes.string,
-  address: PropTypes.string,
-  phone: PropTypes.string
+  eventFormFields: PropTypes.shape({
+    eventId: PropTypes.number,
+    imgSrc: PropTypes.string,
+    title: PropTypes.string,
+    shortDescription: PropTypes.string,
+    text: PropTypes.string,
+    price: PropTypes.number,
+    priceDetails: PropTypes.string,
+    dateTimeTo: PropTypes.string,
+    dateTimeFrom: PropTypes.string,
+    website: PropTypes.string,
+    address: PropTypes.string,
+    phone: PropTypes.string
+  }),
+  eventSavingState: PropTypes.string,
+  saveEvent: PropTypes.func.isRequired,
+  updateEventTranslation: PropTypes.func.isRequired,
+  updateEvent: PropTypes.func.isRequired,
+  validationErrors: PropTypes.shape({})
 };
 
 export default EventEditor;
