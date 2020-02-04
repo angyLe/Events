@@ -19,8 +19,9 @@ import {
 import { apiHelper } from "../../Utils/apiHelper";
 import { eventTranslationSchema, eventsSchema } from "../../dataNormalization";
 
-export const fetchEventsFromServer = ({ ids = [] }) => {
+export const fetchEventsFromServer = args => {
   return dispatch => {
+    const { ids = null } = args || {};
     dispatch(getEventsStart());
 
     let urlParams = "";
