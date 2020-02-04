@@ -11,13 +11,9 @@ import {
   getEventsTranslationsFailure
 } from "./EventTranslationHandlers";
 import {
-  getEventInitialDataStart,
-  setEventInitialData,
   saveEventStart,
   saveEventSuccess,
   saveEventFailure,
-  updateEvent,
-  updateEventTranslation,
   setValidationErrors
 } from "./EventEditorHandler";
 import { apiHelper } from "../../Utils/apiHelper";
@@ -27,8 +23,6 @@ export const fetchEventsFromServer = ({ ids = [] }) => {
   return dispatch => {
     dispatch(getEventsStart());
 
-    console.log("fetchEventsFromServer");
-
     let urlParams = "";
     if (Array.isArray(ids) && ids.length > 0) {
       urlParams = "?";
@@ -36,9 +30,6 @@ export const fetchEventsFromServer = ({ ids = [] }) => {
         urlParams += `ids=${e}&`;
       });
     }
-
-    console.log("!!urlParams");
-    console.log(urlParams);
 
     return apiHelper({
       url: `https://localhost:44376/api/event/GetAll${urlParams}`
@@ -96,7 +87,7 @@ export const fetchEventTranslationsFromServer = ({
 }) => {
   // eslint-disable-next-line no-unused-vars
   return (dispatch, getState) => {
-      console.log("getEventsTranslationsStart");
+    console.log("getEventsTranslationsStart");
     console.log(getEventsTranslationsStart);
 
     dispatch(getEventsTranslationsStart());
