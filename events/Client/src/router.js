@@ -63,7 +63,7 @@ const Routes = () => {
                   component={renderWithLayout(Test, AdminLayout)}
                 />
                 <Route
-                  path={`${url}/eventEditor/:id?`}
+                  path={`${url}/eventEditor/:eventId?`}
                   component={renderWithLayout(EventEditorPage, AdminLayout)}
                 />
                 <Route component={renderWithLayout(PageNotFound, null)} />
