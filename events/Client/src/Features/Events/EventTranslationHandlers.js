@@ -59,14 +59,11 @@ export const selectors = {
   },
   selectEventTranslationByEventId: (state, props) => {
     const eventTranslations = selectors.selectEventTranslations(state);
+   
 
     const item = Object.values(eventTranslations).find(el => {
-      return el.eventId == props.eventId;
+      return el.eventId == props.eventId && el.languageId == props.languageId;
     });
-
-    console.log("%c selectEventTranslationByEventId", "color:brown");
-    console.log(item);
-    console.log(props.eventId);
 
     return item || {};
   }

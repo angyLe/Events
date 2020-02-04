@@ -54,10 +54,15 @@ Event.propTypes = {
 };
 
 const mapStateToProps = (state, ownProps) => {
-  const { navigateToEvent } = ownProps;
+  const { navigateToEvent, currentLangId, eventId } = ownProps;
+
+
 
   return {
-    event: selectEventWithTranslation(state, ownProps),
+    event: selectEventWithTranslation(state, {
+      languageId: currentLangId,
+      eventId
+    }),
     navigateToEvent
   };
 };

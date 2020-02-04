@@ -8,12 +8,12 @@ jest.mock("./EventsHandlers", () => ({
 
 describe("test selectEventWithTranslation", () => {
   it("should select event with translation", () => {
-    const et = { id: 1, eventId: 2, title: "event2" };
+    const et = { id: 1, eventId: 2, title: "event2", languageId: 1 };
     const eventTranslation = { 1: et };
     const e = { id: 2, url: "www.url.com" };
     const events = { 2: e };
     const state = { eventTranslations: eventTranslation, events };
-    const props = { eventId: 2 };
+    const props = { eventId: 2, languageId: 1 };
 
     eventTranslationSelectors.selectEventTranslations = () => eventTranslation;
 

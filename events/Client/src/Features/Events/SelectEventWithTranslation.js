@@ -1,11 +1,9 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { selectors } from "./EventTranslationHandlers";
+import { selectors as translationSelectors } from "./EventTranslationHandlers";
 import { selectEventById } from "./EventsHandlers";
 
-const { selectEventTranslationByEventId } = selectors;
-
 const selectEventWithTranslation = createSelector(
-  [selectEventTranslationByEventId, selectEventById],
+  [translationSelectors.selectEventTranslationByEventId, selectEventById],
   (eventTranslation, event) => {
     console.log("selectEventWithTranslation!!!");
     console.log(eventTranslation);

@@ -36,6 +36,7 @@ export const EventsInfoPage = props => {
       <div>
         <FetchingState showLoadingOnInit fetchState={eventsListFetchState}>
           <EventsList
+            currentLangId={currentLangId}
             eventsList={eventsList}
             navigateToEvent={navigateToEvent}
           />

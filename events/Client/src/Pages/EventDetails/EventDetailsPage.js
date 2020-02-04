@@ -71,7 +71,10 @@ const mapStateToProps = (state, ownProps) => {
     eventTranslationsFetchState: eventTranslationSelectors.selectEventTranslationsFetchState(
       state
     ),
-    eventTranslation: selectEventWithTranslation(state, { eventId }),
+    eventTranslation: selectEventWithTranslation(state, {
+      eventId,
+      languageId: currentLangId
+    }),
     eventId,
     currentLangId,
     routesConfig
