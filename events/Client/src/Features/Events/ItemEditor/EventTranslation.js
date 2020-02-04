@@ -6,7 +6,11 @@ import { SEMANTIC_UI_FLAGS, ICON_NAMES } from "../../../constants";
 import "./EventTranslations.css";
 
 const EventTranslations = props => {
-  const { languagesWithEventTranslations } = props;
+  const {
+    languagesWithEventTranslations,
+    editOrAddEventTranslation,
+    currentLanguageId
+  } = props;
 
   if (
     !Array.isArray(languagesWithEventTranslations) ||
@@ -15,12 +19,24 @@ const EventTranslations = props => {
     return null;
 
   const items = languagesWithEventTranslations.map(item => {
+    const itemLangId = item.languageId;
+    const isCurrentItem = currentLanguageId === itemLangId;
     return (
       <LanguageWithEventInfo
         key={item.languageId}
+        isCurrentItem={isCurrentItem}
+        languageId={itemLangId}
         languageIsoCode={item.languageIsoCode}
         eventTranslationTitle={item.eventTranslationTitle}
         eventTranslationId={item.eventTranslationId}
+        btnClickAction={
+          !isCurrentItem
+            ? () =>
+                editOrAddEventTranslation({
+                  languageId: item.languageId
+                })
+            : null
+        }
       />
     );
   });
@@ -34,7 +50,13 @@ const EventTranslations = props => {
 };
 
 const LanguageWithEventInfo = props => {
-  const { languageIsoCode, eventTranslationTitle, eventTranslationId } = props;
+  const {
+    languageIsoCode,
+    eventTranslationTitle,
+    eventTranslationId,
+    btnClickAction,
+    isCurrentItem
+  } = props;
 
   return (
     <div className="Language-with-event-info">
@@ -43,26 +65,36 @@ const LanguageWithEventInfo = props => {
         name={SEMANTIC_UI_FLAGS[languageIsoCode]}
       />
       <div className="Language-with-event-info-Title">
-        {eventTranslationTitle}
+        {eventTranslationTitle || "-"}
       </div>
-      <Button icon={eventTranslationId ? ICON_NAMES.pencil : ICON_NAMES.add} />
+      <Button
+        disabled={isCurrentItem}
+        color="green"
+        onClick={btnClickAction}
+        icon={eventTranslationId ? ICON_NAMES.pencil : ICON_NAMES.add}
+      />
     </div>
   );
 };
 
 LanguageWithEventInfo.defaultProps = {
   eventTranslationTitle: null,
-  eventTranslationId: null
+  eventTranslationId: null,
+  btnClickAction: null
 };
 
 LanguageWithEventInfo.propTypes = {
   languageIsoCode: PropTypes.string.isRequired,
   eventTranslationTitle: PropTypes.string,
-  eventTranslationId: PropTypes.number
+  eventTranslationId: PropTypes.number,
+  btnClickAction: PropTypes.func,
+  isCurrentItem: PropTypes.bool.isRequired
 };
 
 EventTranslations.propTypes = {
-  languagesWithEventTranslations: PropTypes.instanceOf(Array).isRequired
+  languagesWithEventTranslations: PropTypes.instanceOf(Array).isRequired,
+  editOrAddEventTranslation: PropTypes.func.isRequired,
+  currentLanguageId: PropTypes.number.isRequired
 };
 
 export default EventTranslations;

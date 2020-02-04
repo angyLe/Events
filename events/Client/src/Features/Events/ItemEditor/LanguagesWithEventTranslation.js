@@ -2,7 +2,7 @@
 
 // eslint-disable-next-line import/prefer-default-export
 export const getLanguagesWithEventTranslations = args => {
-  const { languages, eventTranslations } = args;
+  const { languages, eventTranslations = {} } = args;
 
   if (!Array.isArray(languages) || languages.length <= 0) return null;
 
@@ -10,9 +10,10 @@ export const getLanguagesWithEventTranslations = args => {
 
   languages.forEach(language => {
     const languageId = language.id;
-    let eventTranslation = eventTranslations.find(
-      event => event.languageId === languageId
-    );
+    let eventTranslation = Object.values(eventTranslations).find(event => {
+      return event.languageId === languageId;
+    });
+
     eventTranslation = eventTranslation || {};
     resultArrays.push({
       languageId,
