@@ -1,4 +1,9 @@
-import { getObj, objIsEmpty, getObjLength } from "./jsTypesHelper";
+import {
+  getObj,
+  objIsEmpty,
+  getObjLength,
+  getObjElementByIndex
+} from "./jsTypesHelper";
 
 describe("getObj test", () => {
   it("should return empty object if value is null ", () => {
@@ -58,5 +63,35 @@ describe("getObjLength test", () => {
   it(" should return length if object is not empty ", () => {
     const result = getObjLength({ 1: { bla: 1 } });
     expect(result).toEqual(1);
+  });
+});
+
+describe("getObjElementByIndex test", () => {
+  it("should return undefined if objIsEmpty is empty ", () => {
+    const result = getObjElementByIndex({}, 1);
+    expect(result).toEqual(undefined);
+  });
+
+  it("should return return null if value is null", () => {
+    const result = getObjElementByIndex(null, 1);
+    expect(result).toEqual(null);
+  });
+
+  it("should return return undefined if value is not an object", () => {
+    const result = getObjElementByIndex([], 1);
+    expect(result).toEqual(undefined);
+  });
+
+  it("should return return null if index is null", () => {
+    const result = getObjElementByIndex({}, null);
+    expect(result).toEqual(null);
+  });
+
+  it(" should return length if object is not empty ", () => {
+    const obj = { title: "bla" };
+    const objOfObj = { 1: obj };
+
+    const result = getObjElementByIndex(objOfObj, 0);
+    expect(result).toEqual(obj);
   });
 });
