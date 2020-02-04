@@ -8,15 +8,16 @@ import BgImage from "./BgImage";
 import "./ImageEditor.css";
 
 const ImageEditor = props => {
-  const { imgSrc } = props;
+  const { imgSrc, onFileChosen } = props;
 
   const [imageSrc, setImage] = useState(imgSrc);
   const [fileManagerWindowState, setFileManagerWindowState] = useState(false);
 
   const onFileClick = chosenFile => {
-    const { src } = chosenFile;
+    const { src, id } = chosenFile;
     setFileManagerWindowState(false);
     setImage(src);
+    onFileChosen({ id });
   };
 
   return (
@@ -49,7 +50,8 @@ ImageEditor.defaultProps = {
 };
 
 ImageEditor.propTypes = {
-  imgSrc: PropTypes.string
+  imgSrc: PropTypes.string,
+  onFileChosen: PropTypes.func.isRequired
 };
 
 export default ImageEditor;
