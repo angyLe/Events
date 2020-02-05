@@ -13,9 +13,6 @@ export const AdminEventsListPage = props => {
   const { eventsList, eventsListFetchState, routesConfig } = props;
   const { fetchEvents } = props;
 
-  console.log("eventsList");
-  console.log(eventsList);
-
   useEffect(() => {
     fetchEvents();
     // eslint-disable-next-line react-hooks/exhaustive-deps
