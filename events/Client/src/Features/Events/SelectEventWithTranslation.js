@@ -6,8 +6,6 @@ const selectEventWithTranslation = createSelector(
   [translationSelectors.selectEventTranslationByEventId, selectEventById],
   (eventTranslation, event) => {
     console.log("selectEventWithTranslation!!!");
-    console.log(eventTranslation);
-    console.log(event);
     return { ...event, ...eventTranslation };
   }
 );
