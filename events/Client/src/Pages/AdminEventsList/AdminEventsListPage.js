@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { PropTypes } from "prop-types";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
+import { Button, Segment } from "semantic-ui-react";
 import EventsList from "../../Features/Events/List/EventsList";
 import { eventSelectors } from "../../Features/Events/EventsHandlers";
 import FetchingState from "../../UI/FetchingState";
@@ -25,15 +26,16 @@ export const AdminEventsListPage = props => {
 
   return (
     <div className="Admin-Events-Info-Wrapper">
-      <div>
-        <FetchingState showLoadingOnInit fetchState={eventsListFetchState}>
-          <EventsList
-            currentLangId={0}
-            eventsList={eventsList}
-            navigateToEvent={navigateToEvent}
-          />
-        </FetchingState>
-      </div>
+      <Segment textAlign="left" style={{ marginLeft: "1%", marginRight: "1%" }}>
+        <Button onClick={navigateToEvent} icon="plus" />
+      </Segment>
+      <FetchingState showLoadingOnInit fetchState={eventsListFetchState}>
+        <EventsList
+          currentLangId={0}
+          eventsList={eventsList}
+          navigateToEvent={navigateToEvent}
+        />
+      </FetchingState>
     </div>
   );
 };
