@@ -14,6 +14,7 @@ import PageNotFound from "./Pages/PageNotFound";
 import EventEditorPage from "./Pages/EventEditor/EventEditorPage";
 import RootAppPublic from "./Features/RootApp/RootAppPublic";
 import AdminLayout from "./Layouts/AdminLayout";
+import AdminEventsListPage from "./Pages/AdminEventsList/AdminEventsListPage";
 
 const renderWithLayout = (Component, Layout, extraProps) => props => {
   if (!Layout) return <Component />;
@@ -25,15 +26,17 @@ const renderWithLayout = (Component, Layout, extraProps) => props => {
   );
 };
 
-const Test = () => {
-  return <div>Test</div>;
-};
-
 const RoutesConfig = ({ currentLangCode, history }) => {
   const navigate = url => {
     history.push({
       pathname: `/${currentLangCode}/${url}`
       //search: "?query=abc",
+    });
+  };
+
+  const adminNavigate = url => {
+    history.push({
+      pathname: `/admin/${url}`
     });
   };
 
@@ -45,7 +48,15 @@ const RoutesConfig = ({ currentLangCode, history }) => {
     navigate("");
   };
 
-  return { navigateToEventTranslation, navigateToEventsList };
+  const navigateToEventEditor = () => {
+    adminNavigate("");
+  };
+
+  return {
+    navigateToEventTranslation,
+    navigateToEventsList,
+    navigateToEventEditor
+  };
 };
 
 const Routes = () => {
@@ -54,22 +65,40 @@ const Routes = () => {
       <Switch>
         <Route
           path="/admin"
-          render={({ match: { url } }) => (
-            <>
-              <Switch>
-                <Route
-                  exact
-                  path={`${url}/`}
-                  component={renderWithLayout(Test, AdminLayout)}
-                />
-                <Route
-                  path={`${url}/eventEditor/:eventId?`}
-                  component={renderWithLayout(EventEditorPage, AdminLayout)}
-                />
-                <Route component={renderWithLayout(PageNotFound, null)} />
-              </Switch>
-            </>
-          )}
+          render={({ history, match: { url } }) => {
+            const routesConfig = RoutesConfig({
+              history
+            });
+
+            const extraProps = {
+              routesConfig
+            };
+
+            return (
+              <>
+                <Switch>
+                  <Route
+                    exact
+                    path={`${url}/`}
+                    component={renderWithLayout(
+                      AdminEventsListPage,
+                      AdminLayout,
+                      extraProps
+                    )}
+                  />
+                  <Route
+                    path={`${url}/eventEditor/:eventId?`}
+                    component={renderWithLayout(
+                      EventEditorPage,
+                      AdminLayout,
+                      extraProps
+                    )}
+                  />
+                  <Route component={renderWithLayout(PageNotFound, null)} />
+                </Switch>
+              </>
+            );
+          }}
         />
 
         <Route
