@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.Collections.Generic;
 
-namespace events.Controllers.Filters
+namespace Events.Controllers.Filters
 {
     public class ValidationFilter : Attribute, IActionFilter
     {
