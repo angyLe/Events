@@ -11,7 +11,7 @@ import selectEventWithTranslation from "../SelectEventWithTranslation";
 export const Event = props => {
   const { event, navigateToEvent } = props;
 
-  const { imgSrc, title, shortDescription, price, dateTimeFrom } = event;
+  const { imgSrc, title, name, shortDescription, price, dateTimeFrom } = event;
 
   return (
     <div className="Event-element">
@@ -24,7 +24,7 @@ export const Event = props => {
         }}
         className="Event-element-card"
         image={imgSrc || ""}
-        header={title || ""}
+        header={title || name}
         meta={dayjs(dateTimeFrom).format("DD MMMM, HH:MM")}
         description={shortDescription || ""}
         extra={
@@ -45,8 +45,10 @@ Event.propTypes = {
   event: PropTypes.shape({
     id: PropTypes.number,
     imgSrc: PropTypes.string,
-    title: PropTypes.string.isRequired,
-    shortDescription: PropTypes.string.isRequired,
+    imgId: PropTypes.number,
+    title: PropTypes.string,
+    name: PropTypes.string.isRequired,
+    shortDescription: PropTypes.string,
     price: PropTypes.number.isRequired,
     dateTimeFrom: PropTypes.string.isRequired
   }),
@@ -55,8 +57,6 @@ Event.propTypes = {
 
 const mapStateToProps = (state, ownProps) => {
   const { navigateToEvent, currentLangId, eventId } = ownProps;
-
-
 
   return {
     event: selectEventWithTranslation(state, {
