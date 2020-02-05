@@ -1,15 +1,35 @@
 import { schema } from "normalizr";
 
-const eventTranslations = new schema.Entity("eventTranslations", {
-  idAttribute: "id"
-});
+/** array of events with eventTranslations [{eventId: 1, eventTranslations: []}] */
+const eventTranslationsAsPropertyInEvent = new schema.Entity(
+  "eventTranslations",
+  { event: null },
+  {
+    idAttribute: "eventTranslationId"
+  }
+);
 
-const event = new schema.Entity("event", { idAttribute: "id" });
+export const eventsSchema = new schema.Entity(
+  "event",
+  {
+    eventTranslations: [eventTranslationsAsPropertyInEvent]
+  },
+  { idAttribute: "eventId" }
+);
 
-export const eventsSchema = new schema.Entity("event", {
-  eventTranslations: [eventTranslations]
-});
+/** array of event translations with event property [{eventTranslationId: 1, event={eventId:2}}] */
+const eventAsPropertyInEventTranslation = new schema.Entity(
+  "event",
+  {},
+  { idAttribute: "eventId" }
+);
 
-export const eventTranslationSchema = new schema.Entity("eventTranslations", {
-  event
-});
+export const eventTranslationSchema = new schema.Entity(
+  "eventTranslations",
+  {
+    event: eventAsPropertyInEventTranslation
+  },
+  {
+    idAttribute: "eventTranslationId"
+  }
+);
