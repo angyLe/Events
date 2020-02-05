@@ -10,7 +10,9 @@ export const netCoreValidationErrors = args => {
 
   field = field || {};
 
-  return field.errors.length > 0 ? field.errors.join(" ") : null;
+  return field.errors && field.errors.length > 0
+    ? field.errors.join(" ")
+    : null;
 };
 
 export const checkIfValid = ({ validationErrors, propName }) => {
