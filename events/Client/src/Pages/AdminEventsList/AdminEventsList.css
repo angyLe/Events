@@ -1,0 +1,9 @@
+.Admin-Events-Info-Wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.Admin-Events-Info-Wrapper > div {
+  width: 100%;
+  margin-bottom: 20px;
+}

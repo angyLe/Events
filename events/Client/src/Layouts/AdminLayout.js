@@ -8,7 +8,7 @@ import "./AdminLayout.css";
 const AdminLayout = props => {
   const { children } = props;
   return (
-    <div className="App-admin">
+    <div className="App App-admin">
       <AppHeader appName={tr("AdminHeader", "Admin")} />
       <div className={`App-admin-main ${DEFAULT_PADDINGS_CLASS_NAME}`}>
         {children}
