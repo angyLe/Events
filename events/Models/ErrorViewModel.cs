@@ -1,6 +1,6 @@
 using System;
 
-namespace events.Models
+namespace Events.Models
 {
     public class ErrorViewModel
     {

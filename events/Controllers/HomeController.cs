@@ -5,9 +5,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using events.Models;
+using Events.Models;
 
-namespace events.Controllers
+namespace Events.Controllers
 {
     [Produces("application/json")]
     [Route("api/home")]
