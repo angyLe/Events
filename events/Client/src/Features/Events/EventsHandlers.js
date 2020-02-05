@@ -66,3 +66,9 @@ export const selectEventById = (state, props) => {
   return selectEvents(state)[props.eventId] || {};
 };
 
+export const eventSelectors = {
+  selectSlice,
+  selectEvents,
+  selectFetchState,
+  selectEventById
+};
