@@ -19,8 +19,8 @@ export const AdminEventsListPage = props => {
   }, []);
 
   const navigateToEvent = obj => {
-    //routesConfig.navigateToEventTranslation(obj);
-    //TODO
+    const { eventId } = obj || {};
+    routesConfig.navigateToEventEditor({ eventId });
   };
 
   return (
@@ -48,7 +48,7 @@ AdminEventsListPage.propTypes = {
   eventsListFetchState: PropTypes.string,
   fetchEvents: PropTypes.func.isRequired,
   routesConfig: PropTypes.shape({
-    navigateToEventTranslation: PropTypes.func.isRequired
+    navigateToEventEditor: PropTypes.func.isRequired
   }).isRequired
 };
 

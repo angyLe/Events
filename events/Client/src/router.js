@@ -48,8 +48,8 @@ const RoutesConfig = ({ currentLangCode, history }) => {
     navigate("");
   };
 
-  const navigateToEventEditor = () => {
-    adminNavigate("");
+  const navigateToEventEditor = ({ eventId }) => {
+    adminNavigate(`eventEditor/${eventId}`);
   };
 
   return {
