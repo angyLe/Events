@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import useLocationChanged from "../../CustomHooks/LocationChanged";
 
-const RootAppPublic = props => {
+const RootApp = props => {
   const { children } = props;
 
   useLocationChanged();

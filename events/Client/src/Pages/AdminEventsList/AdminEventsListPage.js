@@ -16,6 +16,7 @@ export const AdminEventsListPage = props => {
 
   useEffect(() => {
     fetchEvents();
+    return () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

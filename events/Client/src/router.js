@@ -12,16 +12,19 @@ import EventDetails from "./Pages/EventDetails/EventDetailsPage";
 import { DEFAULT_LANG } from "./constants";
 import PageNotFound from "./Pages/PageNotFound";
 import EventEditorPage from "./Pages/EventEditor/EventEditorPage";
-import RootAppPublic from "./Features/RootApp/RootAppPublic";
+import RootApp from "./Features/RootApp/RootAppPublic";
 import AdminLayout from "./Layouts/AdminLayout";
 import AdminEventsListPage from "./Pages/AdminEventsList/AdminEventsListPage";
+import WithReset from "./UI/WithReset";
 
 const renderWithLayout = (Component, Layout, extraProps) => props => {
   if (!Layout) return <Component />;
 
   return (
     <Layout {...props} {...extraProps}>
-      <Component {...props} {...extraProps} />
+      <WithReset>
+        <Component {...props} {...extraProps} />
+      </WithReset>
     </Layout>
   );
 };
@@ -67,20 +70,19 @@ const RoutesConfig = ({ currentLangCode, history }) => {
 const Routes = () => {
   return (
     <Router>
-      <Switch>
-        <Route
-          path="/admin"
-          render={({ history, match: { url } }) => {
-            const routesConfig = RoutesConfig({
-              history
-            });
+      <RootApp>
+        <Switch>
+          <Route
+            path="/admin"
+            render={({ history, match: { url } }) => {
+              const routesConfig = RoutesConfig({
+                history
+              });
 
-            const extraProps = {
-              routesConfig
-            };
-
-            return (
-              <>
+              const extraProps = {
+                routesConfig
+              };
+              return (
                 <Switch>
                   <Route
                     exact
@@ -101,62 +103,62 @@ const Routes = () => {
                   />
                   <Route component={renderWithLayout(PageNotFound, null)} />
                 </Switch>
-              </>
-            );
-          }}
-        />
+              );
+            }}
+          />
 
-        <Route
-          path="/"
-          exact
-          render={() => (
-            <Redirect
-              to={{
-                pathname: `/${DEFAULT_LANG}`
-              }}
-            />
-          )}
-        />
+          <Route
+            path="/"
+            exact
+            render={() => (
+              <Redirect
+                to={{
+                  pathname: `/${DEFAULT_LANG}`
+                }}
+              />
+            )}
+          />
 
-        <Route
-          path="/:lang"
-          render={routeInfo => {
-            const {
-              history,
-              match: { url, params }
-            } = routeInfo;
+          <Route
+            path="/:lang"
+            render={routeInfo => {
+              const {
+                history,
+                match: { url, params }
+              } = routeInfo;
 
-            const isoCodeParam =
-              typeof params === "object" ? params.lang : null;
-            const redirectToDefaultLang = <Redirect to={{ pathname: "/en" }} />;
+              const isoCodeParam =
+                typeof params === "object" ? params.lang : null;
+              const redirectToDefaultLang = (
+                <Redirect to={{ pathname: "/en" }} />
+              );
 
-            if (!isoCodeParam) return redirectToDefaultLang;
+              if (!isoCodeParam) return redirectToDefaultLang;
 
-            const isoCodes = ["nb", "en"];
+              const isoCodes = ["nb", "en"];
 
-            /* TODO: Add temporary solution to pass language id as props. It must be
+              /* TODO: Add temporary solution to pass language id as props. It must be
             replaced later by retrieving data from languages array.
             */
-            const languageIds = {
-              nb: 2,
-              en: 1
-            };
-            const isValidIsoCode = isoCodes.includes(isoCodeParam);
+              const languageIds = {
+                nb: 2,
+                en: 1
+              };
+              const isValidIsoCode = isoCodes.includes(isoCodeParam);
 
-            if (!isValidIsoCode) return redirectToDefaultLang;
+              if (!isValidIsoCode) return redirectToDefaultLang;
 
-            const routesConfig = RoutesConfig({
-              currentLangCode: isoCodeParam,
-              history
-            });
+              const routesConfig = RoutesConfig({
+                currentLangCode: isoCodeParam,
+                history
+              });
 
-            const extraProps = {
-              currentLangId: languageIds[isoCodeParam],
-              routesConfig
-            };
+              const extraProps = {
+                currentLangId: languageIds[isoCodeParam],
+                routesConfig
+              };
 
-            return (
-              <RootAppPublic>
+              return (
                 <Switch>
                   <Route
                     exact
@@ -178,13 +180,12 @@ const Routes = () => {
                   />
                   <Route component={renderWithLayout(PageNotFound, null)} />
                 </Switch>
-              </RootAppPublic>
-            );
-          }}
-        />
-
-        <Route component={PageNotFound} />
-      </Switch>
+              );
+            }}
+          />
+          <Route component={PageNotFound} />
+        </Switch>
+      </RootApp>
     </Router>
   );
 };
