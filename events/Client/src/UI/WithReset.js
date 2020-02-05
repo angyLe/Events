@@ -9,7 +9,6 @@ const WithReset = props => {
 
   useEffect(() => {
     return () => {
-      console.log("Page unmounted");
       resetState({ type: "RESET" });
     };
   });
