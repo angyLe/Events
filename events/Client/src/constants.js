@@ -6,12 +6,12 @@ export const VALUTA = "NOK";
 export const DEFAULT_LANG = "en";
 
 /* See list of flag names: https://react.semantic-ui.com/elements/flag/ */
-export const SEMANTIC_UI_FLAGS = { en: "america", nb: "norway", ru: "russia"};
+export const SEMANTIC_UI_FLAGS = { en: "america", nb: "norway", ru: "russia" };
 
 /* Icons from https://react.semantic-ui.com. They uses font awesome icons */
 export const ICON_NAMES = { pencil: "pencil", add: "add" };
 
-export const APP_SERVER_ERROR = (()=> {
+export const APP_SERVER_ERROR = (() => {
   const errors = {
     1: "UnknownServerError",
     2: "ValidationError",
@@ -43,3 +43,8 @@ export const SAVING_STATE = {
   error: "error",
   success: "success"
 };
+
+export const API_URL =
+  process.env.NODE_ENV === "production"
+    ? "https://localhost:44376" // to change
+    : "https://localhost:44376";

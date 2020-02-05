@@ -1,5 +1,6 @@
 import { batch } from "react-redux";
 import { normalize } from "normalizr";
+import { API_URL } from "../../constants";
 import {
   getEventsStart,
   getEventsSuccess,
@@ -38,7 +39,7 @@ export const fetchEventsFromServer = args => {
     }
 
     return apiHelper({
-      url: `https://localhost:44376/api/event/GetAll${urlParams}`
+      url: `${API_URL}/api/event/GetAll${urlParams}`
     })
       .then(events => {
         const eventsResult = Array.isArray(events) ? events : [];
@@ -70,7 +71,7 @@ export const eventsOperations = {};
 const createUrlToFetchEventTranslations = obj => {
   const { languageId, eventId } = obj || {};
 
-  const urlMainPath = `https://localhost:44376/api/event/GetEventTranslations`;
+  const urlMainPath = `${API_URL}/api/event/GetEventTranslations`;
   const withLanguage = `languageId=${languageId}`;
   const withEvent = `eventId=${eventId}`;
   let urlQueryPath = ``;
@@ -124,7 +125,7 @@ export const saveEvent = data => {
   return (dispatch, getState) => {
     dispatch(saveEventStart());
 
-    const url = `https://localhost:44376/api/event/save`; // TODO!!  domen should be configured per environment
+    const url = `${API_URL}/api/event/save`; // TODO!!  domen should be configured per environment
 
     const { eventId } = data;
     const { eventTranslationId } = data;
