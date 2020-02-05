@@ -24,14 +24,19 @@ const eventsSlice = createSlice({
       state.fetchState = FETCH_STATE.error;
     },
     addEvent(state, action) {
-      const event = action.payload;
-      if (event && event.id) state.eventsList[event.id] = event;
+      const event = action.payload || {};
+
+      if (event && event.eventId) {
+        state.eventsList = state.eventsList || {};
+        state.eventsList[event.eventId] = event;
+      }
     },
     updateEvent(state, action) {
-      const event = action.payload;
-      const { id } = event;
-      if (id && state.eventsList[id]) {
-        state.eventsList[id] = event;
+      const event = action.payload || {};
+      const { eventId } = event;
+
+      if (eventId && state.eventsList && state.eventsList[eventId]) {
+        state.eventsList[eventId] = event;
       }
     },
     deleteEvent(state, action) {

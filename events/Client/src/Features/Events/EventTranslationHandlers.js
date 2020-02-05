@@ -23,6 +23,25 @@ const eventTranslationsSlice = createSlice({
     },
     getEventsTranslationsFailure(state) {
       state.fetchState = FETCH_STATE.error;
+    },
+    addEventTranslation(state, action) {
+      const et = action.payload || {};
+
+      if (et && et.eventTranslationId) {
+        state.eventTranslationsList = state.eventTranslationsList || {};
+        state.eventTranslationsList[et.eventTranslationId] = et;
+      }
+    },
+    updateEventTranslation(state, action) {
+      const et = action.payload || {};
+      const { eventTranslationId } = et;
+      if (
+        eventTranslationId &&
+        state.eventTranslationsList &&
+        state.eventTranslationsList[eventTranslationId]
+      ) {
+        state.eventTranslationsList[eventTranslationId] = et;
+      }
     }
   },
   extraReducers: builder =>
@@ -34,7 +53,9 @@ const eventTranslationsSlice = createSlice({
 export const {
   getEventsTranslationsStart,
   getEventsTranslationsSuccess,
-  getEventsTranslationsFailure
+  getEventsTranslationsFailure,
+  addEventTranslation,
+  updateEventTranslation
 } = eventTranslationsSlice.actions;
 
 export default eventTranslationsSlice.reducer;
@@ -59,7 +80,6 @@ export const selectors = {
   },
   selectEventTranslationByEventId: (state, props) => {
     const eventTranslations = selectors.selectEventTranslations(state);
-   
 
     const item = Object.values(eventTranslations).find(el => {
       return el.eventId == props.eventId && el.languageId == props.languageId;

@@ -3,12 +3,16 @@ import { normalize } from "normalizr";
 import {
   getEventsStart,
   getEventsSuccess,
-  getEventsFailure
+  getEventsFailure,
+  addEvent,
+  updateEvent
 } from "./EventsHandlers";
 import {
   getEventsTranslationsStart,
   getEventsTranslationsSuccess,
-  getEventsTranslationsFailure
+  getEventsTranslationsFailure,
+  addEventTranslation,
+  updateEventTranslation
 } from "./EventTranslationHandlers";
 import {
   saveEventStart,
@@ -18,6 +22,7 @@ import {
 } from "./EventEditorHandler";
 import { apiHelper } from "../../Utils/apiHelper";
 import { eventTranslationSchema, eventsSchema } from "../../dataNormalization";
+import { getObjElementByIndex, objIsEmpty } from "../../Utils/jsTypesHelper";
 
 export const fetchEventsFromServer = args => {
   return dispatch => {
@@ -119,33 +124,52 @@ export const saveEvent = data => {
   return (dispatch, getState) => {
     dispatch(saveEventStart());
 
-    const url = `https://localhost:44376/api/event/save`;
+    const url = `https://localhost:44376/api/event/save`; // TODO!!  domen should be configured per environment
+
+    const { eventId } = data;
+    const { eventTranslationId } = data;
 
     return apiHelper({ url, method: "post", dataToSent: data })
       .then(res => {
-        dispatch(saveEventSuccess());
-
         const eventResult = res || {};
-        const normalizeData = normalize(eventResult, [eventTranslationSchema]);
+        const normalizeData = normalize(eventResult, eventsSchema);
+
         const entities =
           normalizeData && normalizeData.entities ? normalizeData.entities : {};
 
-        let { event, eventTranslation } = entities;
-        event = event || {};
-        eventTranslation = eventTranslation || {};
+        const { event, eventTranslations } = entities;
+
+        const ev = getObjElementByIndex(event, 1);
+        const et = getObjElementByIndex(eventTranslations, 1);
+
+        batch(() => {
+          dispatch(saveEventSuccess());
+
+          if (!objIsEmpty(event)) {
+            if (!eventId) {
+              dispatch(addEvent(ev));
+            } else {
+              dispatch(updateEvent(ev));
+            }
+          }
+
+          if (!objIsEmpty(eventTranslations)) {
+            if (!eventTranslationId) {
+              dispatch(addEventTranslation(et));
+            } else {
+              dispatch(updateEventTranslation(et));
+            }
+          }
+        });
 
         return {
-          eventId: event.eventId,
-          eventTranslationId: eventTranslation.eventTranslationId,
           event,
-          eventTranslation
+          eventTranslations
         };
       })
       .catch(res => {
-        console.log("cathc error");
-        console.log(res);
-
         const error = res || {};
+        console.log(res);
 
         if (error.statusCode === 400) {
           dispatch(setValidationErrors(error.data));
