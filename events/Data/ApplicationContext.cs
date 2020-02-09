@@ -6,7 +6,7 @@ namespace Events.Data
     public class ApplicationContext : DbContext
     {
         public DbSet<Event> Events { get; set; }
-        public DbSet<EventTranslation> EventTranslation { get; set; }
+        public DbSet<EventTranslation> EventTranslations { get; set; }
         public DbSet<Language> Languages { get; set; }
         public DbSet<Image> Images { get; set; }
 
@@ -17,7 +17,7 @@ namespace Events.Data
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<EventTranslation>().HasAlternateKey(e => new { e.Event, e.LanguageId });
+            modelBuilder.Entity<EventTranslation>().HasAlternateKey(e => new { e.EventId, e.LanguageId });
         }
     }
 }
