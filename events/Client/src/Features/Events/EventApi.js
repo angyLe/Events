@@ -39,11 +39,10 @@ export const fetchEventsFromServer = args => {
     }
 
     return apiHelper({
-      url: `${API_URL}/api/event/GetAll${urlParams}`
+      url: `${API_URL}/api/event/Get${urlParams}`
     })
       .then(events => {
         const eventsResult = Array.isArray(events) ? events : [];
-
         const normalizeData = normalize(eventsResult, [eventsSchema]);
         const entities =
           normalizeData && normalizeData.entities ? normalizeData.entities : {};
@@ -62,6 +61,7 @@ export const fetchEventsFromServer = args => {
         console.log("error");
         console.log(error);
         dispatch(getEventsFailure());
+        return Promise.reject();
       });
   };
 };
@@ -71,7 +71,7 @@ export const eventsOperations = {};
 const createUrlToFetchEventTranslations = obj => {
   const { languageId, eventId } = obj || {};
 
-  const urlMainPath = `${API_URL}/api/event/GetEventTranslations`;
+  const urlMainPath = `${API_URL}/api/event/GetTranslations`;
   const withLanguage = `languageId=${languageId}`;
   const withEvent = `eventId=${eventId}`;
   let urlQueryPath = ``;
@@ -116,6 +116,7 @@ export const fetchEventTranslationsFromServer = ({
       })
       .catch(() => {
         dispatch(getEventsTranslationsFailure());
+        return Promise.reject();
       });
   };
 };
@@ -125,7 +126,7 @@ export const saveEvent = data => {
   return (dispatch, getState) => {
     dispatch(saveEventStart());
 
-    const url = `${API_URL}/api/event/save`; // TODO!!  domen should be configured per environment
+    const url = `${API_URL}/api/event/Save`; // TODO!!  domen should be configured per environment
 
     const { eventId } = data;
     const { eventTranslationId } = data;
@@ -177,6 +178,7 @@ export const saveEvent = data => {
         } else {
           dispatch(saveEventFailure());
         }
+        return Promise.reject();
       });
   };
 };
