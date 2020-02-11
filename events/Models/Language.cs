@@ -9,10 +9,10 @@ namespace Events.Models
     public class Language
     {
         [Key]
-        public int LanguageId;
-        
+        public int LanguageId { get; set; }
+
         [Required]
-        public string IsoCode;
+        public string IsoCode { get; set; }
 
     }
 }
