@@ -20,6 +20,7 @@ const EventEditor = props => {
   } = props;
   const {
     imgSrc,
+    name,
     title,
     shortDescription,
     text,
@@ -48,6 +49,25 @@ const EventEditor = props => {
         </Form.Field>
 
         <div className="Event-Editor-FirstPart-Inputs">
+          <Form.Field>
+            <Form.Input
+              placeholder={tr("EventNamePlaceholder", "Event name")}
+              label={tr("EventNameLabel", "Event name")}
+              name="name"
+              value={name || ""}
+              required
+              error={checkIfValid({
+                validationErrors,
+                propName: "name"
+              })}
+              onChange={(e, obj) => {
+                updateEventTranslation({
+                  value: obj.value,
+                  property: "name"
+                });
+              }}
+            />
+          </Form.Field>
           <Form.Field>
             <Form.Input
               placeholder={tr("EventTitlePlaceholder", "Event title")}
@@ -281,6 +301,7 @@ EventEditor.defaultProps = {
 EventEditor.propTypes = {
   eventFormFields: PropTypes.shape({
     eventId: PropTypes.number,
+    name: PropTypes.string,
     imgSrc: PropTypes.string,
     title: PropTypes.string,
     shortDescription: PropTypes.string,
