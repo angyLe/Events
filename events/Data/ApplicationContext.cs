@@ -13,11 +13,17 @@ namespace Events.Data
         public ApplicationContext(DbContextOptions<ApplicationContext> options)
             : base(options)
         {
-            Database.EnsureCreated();  
+            Database.EnsureCreated();
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<EventTranslation>().HasAlternateKey(e => new { e.EventId, e.LanguageId });
+            modelBuilder.Entity<EventTranslation>()
+                .HasAlternateKey(e => new { e.EventId, e.LanguageId });
+
+            modelBuilder.Entity<EventTranslation>()
+                .HasOne(x=>x.Language)
+                .WithMany()
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
