@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Events.Models.Commands;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -36,4 +37,19 @@ namespace Events.Models
 
     }
 
+    public static class EventTranslationDataHandler
+    {
+        public static void SetData(EventTranslation ev, SaveEventCommand cmd)
+        {
+
+            if (ev == null)
+                return;
+
+            ev.LanguageId = cmd.LanguageId;
+            ev.Title = !string.IsNullOrWhiteSpace(cmd.Title) ? cmd.Title.Trim() : ev.Title;
+            ev.ShortDescription = !string.IsNullOrWhiteSpace(cmd.ShortDescription) ? cmd.ShortDescription.Trim() : ev.ShortDescription;
+            ev.Text = !string.IsNullOrWhiteSpace(cmd.Text) ? cmd.Text.Trim() : ev.Text;
+            ev.PriceDetails = cmd.PriceDetails != null ? cmd.PriceDetails : ev.PriceDetails;
+        }
+    }
 }
