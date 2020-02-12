@@ -41,6 +41,7 @@ namespace Events.Models.Commands
         [Url]
         public string Website { get; set; }
 
+        [Required]
         public string Address { get; set; }
 
         [Phone]
