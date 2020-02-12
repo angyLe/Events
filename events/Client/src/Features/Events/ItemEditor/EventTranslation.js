@@ -19,8 +19,9 @@ const EventTranslations = props => {
     return null;
 
   const items = languagesWithEventTranslations.map(item => {
-    const itemLangId = item.languageId;
-    const isCurrentItem = currentLanguageId === itemLangId;
+    const itemLangId = item.languageId || null;
+    const isCurrentItem = Number(currentLanguageId) === Number(itemLangId);
+
     return (
       <LanguageWithEventInfo
         key={item.languageId}
@@ -33,7 +34,7 @@ const EventTranslations = props => {
           !isCurrentItem
             ? () =>
                 editOrAddEventTranslation({
-                  languageId: item.languageId
+                  languageId: Number(itemLangId)
                 })
             : null
         }
