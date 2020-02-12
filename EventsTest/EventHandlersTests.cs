@@ -4,12 +4,10 @@ using Events.Models;
 using Events.Models.AppError;
 using Events.Models.Commands;
 using Events.Models.Queries;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,34 +19,26 @@ namespace EventsTest
     [TestClass]
     public class EventHandlersTests
     {
-        private readonly ApplicationContext dbContext;
-        private readonly ILoggerFactory loggerFactory;
-        private readonly IServiceProvider serviceProvider;
+        private static TestsConfig testConfig = new TestsConfig();
 
-        public EventHandlersTests()
+        [ClassInitialize]
+        public static void ClassInitialize(TestContext context)
         {
-            var services = new ServiceCollection();
+            testConfig.CreateTestData();
+        }
 
-            services.AddLogging();
-
-            services.AddEntityFrameworkInMemoryDatabase()
-                .AddDbContext<ApplicationContext>(opt => opt.UseInMemoryDatabase(databaseName: "dbname"));
-
-            this.serviceProvider = services.BuildServiceProvider();
-
-            this.loggerFactory = serviceProvider.GetService<ILoggerFactory>();
-
-            this.dbContext = serviceProvider.GetRequiredService<ApplicationContext>();
-
-            CreateTestData(dbContext);
+        [ClassCleanup]
+        public static void ClassCleanup()
+        {
+            testConfig.Clean();
         }
 
         [TestMethod]
         public async Task Get()
         {
-            var logger = loggerFactory.CreateLogger<EventGetHandler>();
+            var logger = testConfig.GetLoggerFactory().CreateLogger<EventGetHandler>();
 
-            EventGetHandler eventHandlers = new EventGetHandler(dbContext, logger);
+            EventGetHandler eventHandlers = new EventGetHandler(testConfig.GetDbContext(), logger);
             EventsQuery query = new EventsQuery();
             IList<Event> res = await eventHandlers.Handle(query, new CancellationToken());
 
@@ -77,9 +67,9 @@ namespace EventsTest
         [TestMethod]
         public async Task GetTranslations()
         {
-            var logger = loggerFactory.CreateLogger<EventTranslationHandlers>();
+            var logger = testConfig.GetLoggerFactory().CreateLogger<EventTranslationHandlers>();
 
-            EventTranslationHandlers eventHandlers = new EventTranslationHandlers(dbContext, logger);
+            EventTranslationHandlers eventHandlers = new EventTranslationHandlers(testConfig.GetDbContext(), logger);
             EventTranslationQuery query = new EventTranslationQuery();
             IList<EventTranslation> res = await eventHandlers.Handle(query, new CancellationToken());
 
@@ -101,9 +91,9 @@ namespace EventsTest
         [TestMethod]
         public async Task Save()
         {
-            var logger = loggerFactory.CreateLogger<EventSaveHandler>();
+            var logger = testConfig.GetLoggerFactory().CreateLogger<EventSaveHandler>();
 
-            EventSaveHandler eventSaveHandler = new EventSaveHandler(dbContext, logger);
+            EventSaveHandler eventSaveHandler = new EventSaveHandler(testConfig.GetDbContext(), logger);
 
             SaveEventCommand newEventcmd = new SaveEventCommand()
             {
@@ -187,58 +177,6 @@ namespace EventsTest
 
             Assert.AreEqual((int)AppError.DbRecordNotFound, updateNotExistingEventResult.Item2.ErrorCode);       
 
-        }
-
-
-        private void CreateTestData(ApplicationContext dbContext)
-        {
-            dbContext.Languages.Add(new Language() { IsoCode = "en", LanguageId = 1 });
-            dbContext.Languages.Add(new Language() { IsoCode = "ru", LanguageId = 2 });
-
-            dbContext.Events.Add(new Event()
-            {
-                EventId = 1,
-                Address = "Some adress",
-                Name = "Name",
-                DateTimeFrom = DateTime.UtcNow
-            });
-            dbContext.Events.Add(new Event()
-            {
-                EventId = 2,
-                Address = "Some adress2",
-                Name = "Name2",
-                DateTimeFrom = DateTime.UtcNow
-            });
-
-            dbContext.Events.Add(new Event()
-            {
-                EventId = 3,
-                Address = "Some adress3",
-                Name = "Name3",
-                DateTimeFrom = DateTime.UtcNow
-            });
-
-            dbContext.EventTranslations.Add(new EventTranslation()
-            {
-                EventId = 1,
-                Title = "Title en",
-                LanguageId = 1
-            });
-            dbContext.EventTranslations.Add(new EventTranslation()
-            {
-                EventId = 1,
-                Title = "Заголовок",
-                LanguageId = 2
-            });
-
-            dbContext.EventTranslations.Add(new EventTranslation()
-            {
-                EventId = 2,
-                Title = "Title2",
-                LanguageId = 1
-            });
-
-            dbContext.SaveChanges();
         }
 
     }
