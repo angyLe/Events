@@ -1,5 +1,8 @@
 import { schema } from "normalizr";
 
+export const getEntityHelper = normalizeData =>
+  normalizeData && normalizeData.entities ? normalizeData.entities : {};
+
 /** array of events with eventTranslations [{eventId: 1, eventTranslations: []}] */
 const eventTranslationsAsPropertyInEvent = new schema.Entity(
   "eventTranslations",
@@ -31,5 +34,14 @@ export const eventTranslationSchema = new schema.Entity(
   },
   {
     idAttribute: "eventTranslationId"
+  }
+);
+
+/** array of languages */
+export const languageSchema = new schema.Entity(
+  "languages",
+  {},
+  {
+    idAttribute: "languageId"
   }
 );

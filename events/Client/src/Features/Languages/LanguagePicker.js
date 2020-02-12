@@ -1,21 +1,26 @@
 import React from "react";
+import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 import LanguageFlag from "./LanguageFlag";
 import { SEMANTIC_UI_FLAGS } from "../../constants";
 import { getObj, getObjLength } from "../../Utils/jsTypesHelper";
+import { languageSelectors } from "./LanguagesHandlers";
 
 export const LanguagePicker = props => {
-  const { currentLangId, languages, history } = props;
+  const { currentLangId, appLanguages, history } = props;
 
   const changeLanguage = languageCode => {
-    const currentLanguage = languages[currentLangId] || {};
+    const currentLanguage = appLanguages[currentLangId] || {};
     const { pathname } = window.location;
-    const newPath = pathname.replace(currentLanguage.isoCode, languageCode);
+    const currentIsoCode = languageSelectors.selectLanguageIsoCode(
+      currentLanguage
+    );
+    const newPath = pathname.replace(currentIsoCode, languageCode);
     history.push(newPath);
   };
 
-  const languagesObj = getObj(languages);
+  const languagesObj = getObj(appLanguages);
   const languageListLength = getObjLength(languagesObj);
 
   if (languageListLength <= 1) return null;
@@ -23,13 +28,14 @@ export const LanguagePicker = props => {
 
   const languagesResult = Object.keys(languagesObj).map(el => {
     const element = languagesObj[el];
+    const isoCode = languageSelectors.selectLanguageIsoCode(element);
 
     return (
       <LanguageFlag
-        key={element.id}
-        isActive={el == currentLangId}
+        key={el}
+        isActive={el.toString() === currentLangId.toString()}
         name={SEMANTIC_UI_FLAGS[element.isoCode]}
-        changeLanguage={() => changeLanguage(element.isoCode)}
+        changeLanguage={() => changeLanguage(isoCode)}
       />
     );
   });
@@ -38,16 +44,22 @@ export const LanguagePicker = props => {
 };
 
 LanguagePicker.defaultProps = {
-  languages: {
-    2: { isoCode: "nb", name: "norway", id: 1 },
-    1: { isoCode: "en", name: "usa", id: 2 }
-  }
+  appLanguages: {}
 };
 
 LanguagePicker.propTypes = {
-  languages: PropTypes.shape({}),
+  appLanguages: PropTypes.shape({}),
   currentLangId: PropTypes.number.isRequired,
   history: PropTypes.shape({ push: PropTypes.func.isRequired }).isRequired
 };
 
-export default withRouter(LanguagePicker);
+const mapStateToProps = (state, ownProps) => {
+  const { currentLangId } = ownProps;
+
+  return {
+    appLanguages: languageSelectors.selectLanguages(state, ownProps),
+    currentLangId
+  };
+};
+
+export default withRouter(connect(mapStateToProps, null)(LanguagePicker));
