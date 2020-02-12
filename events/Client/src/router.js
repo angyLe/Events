@@ -1,5 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from "react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 import {
   BrowserRouter as Router,
   Route,
@@ -12,10 +14,12 @@ import EventDetails from "./Pages/EventDetails/EventDetailsPage";
 import { DEFAULT_LANG } from "./constants";
 import PageNotFound from "./Pages/PageNotFound";
 import EventEditorPage from "./Pages/EventEditor/EventEditorPage";
-import RootApp from "./Features/RootApp/RootAppPublic";
+import RootApp from "./Features/RootApp/RootApp";
 import AdminLayout from "./Layouts/AdminLayout";
 import AdminEventsListPage from "./Pages/AdminEventsList/AdminEventsListPage";
 import WithReset from "./UI/WithReset";
+import { languageSelectors } from "./Features/Languages/LanguagesHandlers";
+import { objIsEmpty } from "./Utils/jsTypesHelper";
 
 const renderWithLayout = (Component, Layout, extraProps) => props => {
   if (!Layout) return <Component />;
@@ -67,7 +71,9 @@ const RoutesConfig = ({ currentLangCode, history }) => {
   };
 };
 
-const Routes = () => {
+const Routes = props => {
+  const { appLanguages } = props;
+
   return (
     <Router>
       <RootApp>
@@ -135,26 +141,22 @@ const Routes = () => {
 
               if (!isoCodeParam) return redirectToDefaultLang;
 
-              const isoCodes = ["nb", "en"];
+              const currentLang = languageSelectors.selectLanguageByIsoCodeFromList(
+                appLanguages,
+                { isoCode: isoCodeParam }
+              );
 
-              /* TODO: Add temporary solution to pass language id as props. It must be
-            replaced later by retrieving data from languages array.
-            */
-              const languageIds = {
-                nb: 2,
-                en: 1
-              };
-              const isValidIsoCode = isoCodes.includes(isoCodeParam);
+              const isValidIsoCode = !objIsEmpty(currentLang);
 
               if (!isValidIsoCode) return redirectToDefaultLang;
 
               const routesConfig = RoutesConfig({
-                currentLangCode: isoCodeParam,
+                currentLangCode: currentLang.isoCode,
                 history
               });
 
               const extraProps = {
-                currentLangId: languageIds[isoCodeParam],
+                currentLangId: currentLang.languageId,
                 routesConfig
               };
 
@@ -190,4 +192,18 @@ const Routes = () => {
   );
 };
 
-export default Routes;
+Routes.defaultProps = {
+  appLanguages: {}
+};
+
+Routes.propTypes = {
+  appLanguages: PropTypes.shape({})
+};
+
+const mapStateToProps = state => {
+  return {
+    appLanguages: languageSelectors.selectLanguages(state)
+  };
+};
+
+export default connect(mapStateToProps, null)(Routes);

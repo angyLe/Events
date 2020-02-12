@@ -1,27 +1,39 @@
-// TODO: this selector will take data from state.languages and state.eventTranslations
+/* eslint-disable import/prefer-default-export */
+import { createSelector } from "reselect";
+import { selectors as eventTranslationSelectors } from "../EventTranslationHandlers";
+import { languageSelectors } from "../../Languages/LanguagesHandlers";
+import { objIsEmpty, getObj } from "../../../Utils/jsTypesHelper";
 
-// eslint-disable-next-line import/prefer-default-export
-export const getLanguagesWithEventTranslations = args => {
-  const { languages, eventTranslations = {} } = args;
+export const selectLanguagesWithEventTranslations = createSelector(
+  languageSelectors.selectLanguages,
+  eventTranslationSelectors.selectEventTranslations,
+  (languages, eventTranslations) => {
 
-  if (!Array.isArray(languages) || languages.length <= 0) return null;
+    if (objIsEmpty(languages)) {
+      return [];
+    }
 
-  const resultArrays = [];
+    const eventTranslationsTemp = getObj(eventTranslations);
 
-  languages.forEach(language => {
-    const languageId = language.id;
-    let eventTranslation = Object.values(eventTranslations).find(event => {
-      return event.languageId === languageId;
+    const resultArrays = [];
+
+    Object.entries(languages).forEach(([key, language]) => {
+      const languageId = Number(key);
+      let eventTranslation = Object.values(eventTranslationsTemp).find(
+        event => {
+          return event.languageId === languageId;
+        }
+      );
+
+      eventTranslation = eventTranslation || {};
+
+      resultArrays.push({
+        languageId,
+        languageIsoCode: language.isoCode,
+        eventTranslationTitle: eventTranslation.title || null,
+        eventTranslationId: eventTranslation.eventTranslationId || null
+      });
     });
-
-    eventTranslation = eventTranslation || {};
-    resultArrays.push({
-      languageId,
-      languageIsoCode: language.isoCode,
-      eventTranslationTitle: eventTranslation.title || null,
-      eventTranslationId: eventTranslation.id || null
-    });
-  });
-
-  return resultArrays;
-};
+    return resultArrays;
+  }
+);

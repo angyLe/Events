@@ -5,7 +5,7 @@ import { PropTypes } from "prop-types";
 import { Segment, Header } from "semantic-ui-react";
 import EventEditor from "../../Features/Events/ItemEditor/EventEditor";
 import EventTranslations from "../../Features/Events/ItemEditor/EventTranslation";
-import { getLanguagesWithEventTranslations } from "../../Features/Events/ItemEditor/LanguagesWithEventTranslation";
+import { selectLanguagesWithEventTranslations } from "../../Features/Events/ItemEditor/LanguagesWithEventTranslation";
 import {
   selectors as eventSelectors,
   setEventInitialData,
@@ -24,14 +24,9 @@ import { getObjElementByIndex } from "../../Utils/jsTypesHelper";
 import FetchingState from "../../UI/FetchingState";
 import "./EventEditorPage.css";
 
-const languages = [
-  { id: 1, isoCode: "en" },
-  { id: 2, isoCode: "nb" },
-  { id: 3, isoCode: "ru" }
-];
-
 export const EventEditorPage = props => {
   const {
+    languagesWithEventTranslations,
     saveEvent,
     updateEventTranslation,
     updateEvent,
@@ -43,14 +38,8 @@ export const EventEditorPage = props => {
     eventFetchingState,
     eventFormFields,
     eventSavingState,
-    eventTranslations,
     validationErrors
   } = props;
-
-  const languagesWithEvents = getLanguagesWithEventTranslations({
-    languages,
-    eventTranslations
-  });
 
   useEffect(() => {
     if (eventId) {
@@ -63,11 +52,11 @@ export const EventEditorPage = props => {
         setEventInitialState({ event, eventTranslation });
       });
     } else {
-      // TODO: get language dynamic way
+      // take first language as default if there is no events.
       setEventInitialState({
         event: null,
         eventTranslation: setEventTranslationInitialFields({
-          languageId: 1,
+          languageId: languagesWithEventTranslations[0].languageId,
           eventId
         })
       });
@@ -109,7 +98,7 @@ export const EventEditorPage = props => {
           <Header>Translations</Header>
           <FetchingState showLoadingOnInit fetchState={eventFetchingState}>
             <EventTranslations
-              languagesWithEventTranslations={languagesWithEvents}
+              languagesWithEventTranslations={languagesWithEventTranslations}
               currentLanguageId={currentLanguageId}
               editOrAddEventTranslation={editOrAddEventTranslation}
             />
@@ -143,13 +132,14 @@ EventEditorPage.propTypes = {
   saveEvent: PropTypes.func.isRequired,
   updateEvent: PropTypes.func.isRequired,
   updateEventTranslation: PropTypes.func.isRequired,
-  changeCurrentTranslation: PropTypes.func.isRequired
+  changeCurrentTranslation: PropTypes.func.isRequired,
+  languagesWithEventTranslations: PropTypes.instanceOf(Array).isRequired
 };
 
 const mapStateToProps = (state, ownProps) => {
   const { routesConfig } = ownProps;
   let eventId = getParam(ownProps, "eventId");
-  eventId = eventId ? parseInt(eventId, 10) : 0;
+  eventId = eventId ? parseInt(eventId, 10) : null;
 
   return {
     eventId,
@@ -159,7 +149,11 @@ const mapStateToProps = (state, ownProps) => {
     eventSavingState: eventSelectors.selectEventSavingState(state),
     eventFetchingState: eventSelectors.selectFetchState(state),
     routesConfig,
-    validationErrors: eventSelectors.selectValidationErrors(state)
+    validationErrors: eventSelectors.selectValidationErrors(state),
+    languagesWithEventTranslations: selectLanguagesWithEventTranslations(
+      state,
+      ownProps
+    )
   };
 };
 
