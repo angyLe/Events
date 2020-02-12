@@ -10,7 +10,11 @@ const FetchingState = props => {
     fetchState === FETCH_STATE.loading ||
     (fetchState === null && showLoadingOnInit)
   ) {
-    return <>{tr("FetchLoading", "Loading...")}</>;
+    return (
+      <span style={{ display: "flex", justifyContent: "center" }}>
+        {tr("FetchLoading", "Loading...")}
+      </span>
+    );
   }
 
   if (fetchState === FETCH_STATE.error) {
