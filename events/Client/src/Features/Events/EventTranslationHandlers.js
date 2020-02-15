@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { FETCH_STATE } from "../../constants";
 import { getObj } from "../../Utils/jsTypesHelper";
 import { resetAction } from "../RootApp/RootAppHandlers";
+import dateTimeFilterHandlers from "./EventDateFilterHandlers";
 
 const initialState = {
   fetchState: null,
@@ -90,3 +91,15 @@ export const selectors = {
 };
 
 /** END SELECTORS */
+
+/** EVENT DATE TIME FIlTER HANDLERS */
+const eventTranslationsDateFilter = dateTimeFilterHandlers({
+  name: "eventTranslationsDateFilter"
+});
+
+const eventTranslationDateFilterSlice = eventTranslationsDateFilter.createDateFilterSlice();
+
+export const { setPeriod } = eventTranslationDateFilterSlice.actions;
+export const dateTimeFilterReducer = eventTranslationDateFilterSlice.reducer;
+export const dateTimeFilterSelectors =
+  eventTranslationsDateFilter.dateFilterSelectors;

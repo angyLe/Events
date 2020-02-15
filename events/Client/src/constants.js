@@ -50,6 +50,12 @@ export const SAVING_STATE = {
   success: "success"
 };
 
+export const DAY_PERIOD_TYPE = {
+  day: "day",
+  week: "week",
+  month: "month"
+};
+
 export const API_URL =
   process.env.NODE_ENV === "production"
     ? "https://localhost:44376" // to change
