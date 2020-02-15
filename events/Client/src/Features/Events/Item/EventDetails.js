@@ -5,7 +5,8 @@ import { Image, Header, Segment } from "semantic-ui-react";
 import { VALUTA } from "../../../constants";
 import "./EventDetails.css";
 import tr from "../../../Utils/translationHelper";
-
+import Img from "../../../UI/Img";
+ 
 const EventDetails = props => {
   const { eventTranslation = {} } = props;
 
@@ -28,11 +29,7 @@ const EventDetails = props => {
       <div className="Event-details-from-date">
         {dayjs(dateTimeFrom).format("DD MMMM")}
       </div>
-      {imgSrc ? (
-        <Image fluid className="Event-details-thumb" src={imgSrc} />
-      ) : (
-        ""
-      )}
+      <Img fluid className="Event-details-thumb" src={imgSrc} />
       <Segment className="Event-details-all-info" padded>
         <Header as="h3">{tr("EventDetails", "Details")}</Header>
 

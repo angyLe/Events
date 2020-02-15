@@ -7,6 +7,7 @@ import dayjs from "dayjs";
 import EventPrice from "../EventPrice/EventPrice";
 import "./Event.css";
 import selectEventWithTranslation from "../SelectEventWithTranslation";
+import { IMAGE_IS_NOT_AVAILABLE } from "../../../constants";
 
 export const Event = props => {
   const { event, navigateToEvent } = props;
@@ -23,7 +24,7 @@ export const Event = props => {
           navigateToEvent();
         }}
         className="Event-element-card"
-        image={imgSrc || ""}
+        image={imgSrc || IMAGE_IS_NOT_AVAILABLE}
         header={title || name}
         meta={dayjs(dateTimeFrom).format("DD MMMM, HH:MM")}
         description={shortDescription || ""}
@@ -43,7 +44,6 @@ Event.defaultProps = {
 
 Event.propTypes = {
   event: PropTypes.shape({
-    id: PropTypes.number,
     imgSrc: PropTypes.string,
     imgId: PropTypes.number,
     title: PropTypes.string,

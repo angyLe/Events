@@ -1,10 +1,12 @@
 import PropTypes from "prop-types";
 import React from "react";
+import notAvailableImg from "../Images/icon-no-image.svg";
 
 const BgImage = props => {
-  const { src, width, height, customClassName } = props;
+  const { width, height, customClassName } = props;
+  let { src } = props;
 
-  if (!src) return null;
+  src = src || notAvailableImg;
 
   const imgConfig = {
     backgroundImage: `url("${src}")`,

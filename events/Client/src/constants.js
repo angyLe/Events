@@ -1,5 +1,9 @@
+import notAvailableImg from "./Images/icon-no-image.svg";
+
 /* eslint-disable import/prefer-default-export */
 export const DEFAULT_PADDINGS_CLASS_NAME = "Default-paddings";
+
+export const IMAGE_IS_NOT_AVAILABLE = notAvailableImg;
 
 export const VALUTA = "NOK";
 
