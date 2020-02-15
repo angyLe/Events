@@ -5,7 +5,6 @@ import { selectEventById } from "./EventsHandlers";
 const selectEventWithTranslation = createSelector(
   [translationSelectors.selectEventTranslationByEventId, selectEventById],
   (eventTranslation, event) => {
-    console.log("selectEventWithTranslation!!!");
     return { ...event, ...eventTranslation };
   }
 );
