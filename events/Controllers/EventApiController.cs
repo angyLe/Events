@@ -10,7 +10,6 @@ using Events.Models.Commands;
 using Events.Models.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace Events.Controllers
 {
