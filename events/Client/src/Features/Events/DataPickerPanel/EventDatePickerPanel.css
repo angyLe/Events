@@ -14,11 +14,20 @@
     display:flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
+}
+
+.Events-date-picker-period-header{
+    font-size: large;
+    margin-bottom: 4px;
 }
 
 .Events-date-picker-period-btns {
     margin-top:5px;
+}
+
+.Events-date-picker-btns {
+    display:flex;
+    justify-content: center;
 }
 
 

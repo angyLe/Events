@@ -10,6 +10,7 @@ import FetchingState from "../../UI/FetchingState";
 import selectEventWithTranslation from "../../Features/Events/SelectEventWithTranslation";
 import { getParam } from "../../Utils/reduxHelpers";
 import { fetchEventTranslationsFromServer } from "../../Features/Events/EventApi";
+import { Button } from "semantic-ui-react";
 
 export const EventDetailsPage = props => {
   const {
@@ -34,9 +35,13 @@ export const EventDetailsPage = props => {
   return (
     <div className="Event-Details-Wrapper">
       <div className="Event-Details-Back-All-Events">
-        <button type="button" onClick={navigateToEventsList}>
-          {tr("AllEvents", "All events")}
-        </button>
+        <Button
+          color="green"
+          onClick={navigateToEventsList}
+          labelPosition="left"
+          icon="left chevron"
+          content={tr("AllEvents", "All events")}
+        />
       </div>
       <br />
       <FetchingState fetchState={eventTranslationsFetchState}>

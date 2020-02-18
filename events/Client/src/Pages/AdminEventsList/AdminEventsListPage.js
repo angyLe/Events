@@ -27,7 +27,7 @@ export const AdminEventsListPage = props => {
 
   return (
     <div className="Admin-Events-Info-Wrapper">
-      <Segment textAlign="left" style={{ marginLeft: "1%", marginRight: "1%" }}>
+      <Segment textAlign="left">
         <Button onClick={navigateToEvent} icon="plus" />
       </Segment>
       <FetchingState showLoadingOnInit fetchState={eventsListFetchState}>

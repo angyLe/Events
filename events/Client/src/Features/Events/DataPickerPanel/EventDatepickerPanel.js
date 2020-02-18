@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import "./EventDatePickerPanel.css";
-import { Button } from "semantic-ui-react";
+import { Button, Icon } from "semantic-ui-react";
 import dayjs from "dayjs";
 import tr from "../../../Utils/translationHelper";
 import { DAY_PERIOD_TYPE } from "../../../constants";
@@ -80,9 +80,12 @@ const EventsDatePickerPanel = props => {
         isPrev
       />
       <div className="Events-date-picker-period">
-        <div>{period}</div>
+        <div className="Events-date-picker-period-header">
+          <Icon name="calendar alternate outline" />
+          {period}
+        </div>
         <div className="Events-date-picker-btns">
-          <Button.Group floated="left" size="mini" color={btnDefaultColor}>
+          <Button.Group floated="left" size="medium" color={btnDefaultColor}>
             <Button
               onClick={() =>
                 EventsDatePickerHandlers.changePeriodType({
@@ -153,16 +156,21 @@ const EventsDatePickerPanelNavBtn = props => {
   const { isPrev = false, moveToNextPeriod } = props;
   const btnText = isPrev ? "Prev" : "Next";
   const iconName = isPrev ? "left" : "right";
+  const wrapperStyle = isPrev ? { textAlign: "left" } : { textAlign: "right" };
 
   return (
     <div className="Events-date-picker-nav-btns">
-      <div className="hidden-xs">
-        <Button onClick={moveToNextPeriod}>
+      <div style={wrapperStyle} className="hidden-xs">
+        <Button size="large" onClick={moveToNextPeriod}>
           {tr(`${btnText}DatePeriod`, btnText)}
         </Button>
       </div>
-      <div className="hidden-lg-md">
-        <Button onClick={moveToNextPeriod} icon={`chevron ${iconName}`} />
+      <div style={wrapperStyle} className="hidden-lg-md">
+        <Button
+          size="large"
+          onClick={moveToNextPeriod}
+          icon={`chevron ${iconName}`}
+        />
       </div>
     </div>
   );
