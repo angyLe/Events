@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import Event from "../Item/Event";
 import "./Events.css";
 import { getObj, objIsEmpty } from "../../../Utils/jsTypesHelper";
+import tr from "../../../Utils/translationHelper";
 
 // eslint-disable-next-line react/prefer-stateless-function
 export default class EventsList extends Component {
@@ -16,7 +17,7 @@ export default class EventsList extends Component {
     if (!objIsEmpty(eventsList)) {
       eventsListResult = Object.keys(eventsListObj).map(el => {
         const element = eventsListObj[el];
- 
+
         return (
           <Event
             key={el}
@@ -35,7 +36,9 @@ export default class EventsList extends Component {
         {eventsListResult.length > 0 ? (
           eventsListResult
         ) : (
-          <div className="No-Elements">There is no events</div>
+          <div className="No-Elements">
+            {tr("NoItems", "There is no items")}
+          </div>
         )}
       </div>
     );
