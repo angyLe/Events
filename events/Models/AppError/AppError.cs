@@ -9,9 +9,13 @@ namespace Events.Models.AppError
     {
         None = 0,
 
+        NotSpecified = 1,
+
         DbRecordNotFound = 20,
 
-        DbRecordAlreadyExists = 21
+        DbRecordAlreadyExists = 21,
+
+        DbRecordCanNotBeDeletedBecauseItIsInUse = 22
 
     }
 }

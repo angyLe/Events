@@ -6,36 +6,44 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Events.Models;
+using Microsoft.AspNetCore.Diagnostics;
+using Events.Models.AppError;
 
 namespace Events.Controllers
 {
     [Produces("application/json")]
-    [Route("api/home")]
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<HomeController> logger;
 
         public HomeController(ILogger<HomeController> logger)
         {
-            _logger = logger;
+            this.logger = logger;
         }
 
-        
-        [HttpGet]
-        [Route("Test")]
-        public IActionResult Test()
+        public IActionResult HandleUnhandledExceptions()
         {
+            var feature = this.HttpContext.Features.Get<IExceptionHandlerFeature>();
+            Exception exception = feature.Error;
 
-            int bla = 1;
-            return Json(bla);
-        }
-        
+            AppError er = ExceptionHandler.ExceptionHandler.GetCode(exception);
 
-       /* [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            ErrorViewModel errorViewModel = new ErrorViewModel()
+            {
+                ErrorCode = 1
+            };
+
+            logger.LogError(exception.Message);
+            logger.LogError(exception.StackTrace);
+
+            return StatusCode(500, errorViewModel);
         }
-        */
+
+        /* [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+         public IActionResult Error()
+         {
+             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+         }
+         */
     }
 }
