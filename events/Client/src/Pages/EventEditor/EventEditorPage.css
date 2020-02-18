@@ -1,12 +1,45 @@
 .Event-editor-page {
-    display:flex;
-    justify-content: center;
-    margin-bottom: 100px;
-    margin-top: 50px;
-    flex-wrap: wrap;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 100px;
+  margin-top: 50px;
+  flex-wrap: wrap;
+}
+
+.Event-editor-page-translation-segment-wrapper {
+    width: 30%;
+    margin-left: 2%;
+}
+.Event-editor-page-form-segment-wrapper {
+    width:58%;
 }
 
 .Event-editor-page .ui.segment.Event-editor-page-form-segment,
 .Event-editor-page .ui.segment.Event-editor-page-translations-segment {
-    padding: 50px;
+  padding: 50px;
+}
+
+@media only screen and (max-width: 768px) {
+  .Event-editor-page {
+    flex-direction: column-reverse;
+  }
+
+  .Event-editor-page-translation-segment-wrapper, .Event-editor-page-form-segment-wrapper {
+      width: 100%;
+      margin: 0px;
+      margin-bottom:10px;
+  }
+
+  .Event-editor-page .ui.segment.Event-editor-page-translations-segment {
+    padding: 10px;
+  }
+
+  .Event-Editor-FirstPart > :first-child {
+    width: 100%;
+  }
+
+  .Event-editor-page .ui.segment.Event-editor-page-form-segment,
+  .Event-editor-page .ui.segment.Event-editor-page-translations-segment {
+    padding: 10px;
+  }
 }

@@ -75,7 +75,7 @@ export const EventEditorPage = props => {
 
   return (
     <div className="Event-editor-page">
-      <div style={{ width: "58%" }}>
+      <div className="Event-editor-page-form-segment-wrapper">
         <Segment className="Event-editor-page-form-segment">
           <Header>Event editor</Header>
           <FetchingState
@@ -93,7 +93,7 @@ export const EventEditorPage = props => {
           </FetchingState>
         </Segment>
       </div>
-      <div style={{ width: "30%", marginLeft: "2%" }}>
+      <div className="Event-editor-page-translation-segment-wrapper">
         <Segment className="Event-editor-page-translations-segment">
           <Header>Translations</Header>
           <FetchingState showLoadingOnInit fetchState={eventFetchingState}>
@@ -126,7 +126,7 @@ EventEditorPage.propTypes = {
   eventFetchingState: PropTypes.string,
   eventSavingState: PropTypes.string,
   currentLanguageId: PropTypes.number,
-  validationErrors: PropTypes.shape({}),
+  validationErrors: PropTypes.instanceOf(Array),
   setEventInitialState: PropTypes.func.isRequired,
   getEvent: PropTypes.func.isRequired,
   saveEvent: PropTypes.func.isRequired,
