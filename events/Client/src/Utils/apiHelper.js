@@ -1,5 +1,5 @@
 import { logError } from "./errorLogger";
-import { notifyError } from "../UI/Toast";
+import { notifyError, notifySuccess } from "../UI/Toast";
 import tr from "./translationHelper";
 import { APP_SERVER_ERROR } from "../constants";
 
@@ -100,7 +100,7 @@ export const handleServerError = (response, status) => {
         ? parsedData.errorCode
         : 1;
     const errorMessage = APP_SERVER_ERROR.byId(returnObj.appErrorCode);
-    returnObj.errorMessage = tr(errorMessage, errorMessage);
+    returnObj.errorMessage = tr(errorMessage, errorMessage); //TODO: add error message translations 
     notifyError({ message: returnObj.errorMessage });
   } else {
     const errorMessageTranslation = tr(
@@ -145,6 +145,12 @@ export const apiHelper = async args => {
   const { response, status } = data;
 
   if (status === 200 || status === 204) {
+    if (method === "post") {
+      notifySuccess({
+        message: tr(`RequestSucceed`, `Data was successfully saved!`)
+      });
+    }
+
     return parseResponse({ dataToParse: response });
   }
 
