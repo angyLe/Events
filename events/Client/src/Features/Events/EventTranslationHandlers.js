@@ -83,7 +83,10 @@ export const selectors = {
     const eventTranslations = selectors.selectEventTranslations(state);
 
     const item = Object.values(eventTranslations).find(el => {
-      return el.eventId == props.eventId && el.languageId == props.languageId;
+      return (
+        Number(el.eventId) === Number(props.eventId) &&
+        Number(el.languageId) === Number(props.languageId)
+      );
     });
 
     return item || {};
