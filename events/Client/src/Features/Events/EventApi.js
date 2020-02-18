@@ -126,7 +126,7 @@ export const saveEvent = data => {
   return (dispatch, getState) => {
     dispatch(saveEventStart());
 
-    const url = `${API_URL}/api/event/Save`; // TODO!!  domen should be configured per environment
+    const url = `${API_URL}/api/event/Save`;
 
     const { eventId } = data;
     const { eventTranslationId } = data;
@@ -145,7 +145,14 @@ export const saveEvent = data => {
         const et = getObjElementByIndex(eventTranslations, 1);
 
         batch(() => {
-          dispatch(saveEventSuccess());
+          dispatch(
+            saveEventSuccess({
+              eventId: !objIsEmpty(event) ? ev.eventId : null,
+              eventTranslationId: !objIsEmpty(eventTranslations)
+                ? et.eventTranslationId
+                : null
+            })
+          );
 
           if (!objIsEmpty(event)) {
             if (!eventId) {

@@ -45,7 +45,12 @@ const eventEditorSlice = createSlice({
       state.savingState = SAVING_STATE.saving;
     },
     saveEventSuccess(state, action) {
+      const { eventId, eventTranslationId } = action.payload;
       state.savingState = SAVING_STATE.success;
+      state.eventFields.eventId = eventId || null;
+      state.eventTranslationFields.eventTranslationId =
+        eventTranslationId || null;
+      state.eventTranslationFields.eventId = eventId || null;
     },
     saveEventFailure(state) {
       state.savingState = SAVING_STATE.error;
