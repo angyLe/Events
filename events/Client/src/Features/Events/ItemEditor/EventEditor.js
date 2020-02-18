@@ -5,9 +5,9 @@ import "flatpickr/dist/themes/material_green.css";
 import Flatpickr from "react-flatpickr";
 import tr from "../../../Utils/translationHelper";
 import ImageEditor from "../../../UI/ImageEditor";
-import "./EventEditor.css";
 import { SAVING_STATE } from "../../../constants";
 import { checkIfValid } from "../../../Utils/validationHelper";
+import "./EventEditor.css";
 
 const EventEditor = props => {
   const {
@@ -39,7 +39,7 @@ const EventEditor = props => {
         <Form.Field className="Event-Editor-Form-Img-Field">
           <ImageEditor
             onFileChosen={file =>
-              updateEventTranslation({
+              updateEvent({
                 value: file.id,
                 property: "imageId"
               })
@@ -61,7 +61,7 @@ const EventEditor = props => {
                 propName: "name"
               })}
               onChange={(e, obj) => {
-                updateEventTranslation({
+                updateEvent({
                   value: obj.value,
                   property: "name"
                 });
@@ -75,7 +75,7 @@ const EventEditor = props => {
               name="title"
               value={title || ""}
               required
-              maxLength="20"
+              maxLength="100"
               error={checkIfValid({
                 validationErrors,
                 propName: "title"
@@ -318,7 +318,7 @@ EventEditor.propTypes = {
   saveEvent: PropTypes.func.isRequired,
   updateEventTranslation: PropTypes.func.isRequired,
   updateEvent: PropTypes.func.isRequired,
-  validationErrors: PropTypes.shape({})
+  validationErrors: PropTypes.instanceOf(Array)
 };
 
 export default EventEditor;
