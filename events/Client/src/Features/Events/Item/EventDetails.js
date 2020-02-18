@@ -1,12 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
 import dayjs from "dayjs";
-import { Image, Header, Segment } from "semantic-ui-react";
+import { Header, Segment } from "semantic-ui-react";
 import { VALUTA } from "../../../constants";
 import "./EventDetails.css";
 import tr from "../../../Utils/translationHelper";
 import Img from "../../../UI/Img";
- 
+
 const EventDetails = props => {
   const { eventTranslation = {} } = props;
 
