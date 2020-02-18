@@ -55,12 +55,19 @@ namespace Events.Models
             ev.DateTimeFrom = cmd.DateTimeFrom;
             ev.DateTimeTo = cmd.DateTimeTo != null ? cmd.DateTimeTo : ev.DateTimeTo;
             ev.Website = !string.IsNullOrWhiteSpace(cmd.Website) ? cmd.Website.Trim() : ev.Website;
-            ev.Address = !string.IsNullOrWhiteSpace(cmd.Address) ? cmd.Website.Trim() : ev.Address;
+            ev.Address = !string.IsNullOrWhiteSpace(cmd.Address) ? cmd.Address.Trim() : ev.Address;
             ev.ImageId = cmd.ImageId != null ? cmd.ImageId : ev.ImageId;
 
-            double priceParced = Double.Parse(cmd.Price.Replace(',', '.'), CultureInfo.InvariantCulture);
-            ev.Price = Math.Round(priceParced, 2);
-
+            if (cmd.Price != null)
+            {
+                double priceParced = Double.Parse(cmd.Price.Replace(',', '.'), CultureInfo.InvariantCulture);
+                ev.Price = Math.Round(priceParced, 2);
+            }
+            else
+            {
+                ev.Price = 0;
+            }
+            
         }
     }
 }
