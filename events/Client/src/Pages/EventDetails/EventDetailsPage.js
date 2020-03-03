@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { withRouter } from "react-router-dom";
 import { PropTypes } from "prop-types";
 import { connect } from "react-redux";
+import { Button } from "semantic-ui-react";
 import EventDetails from "../../Features/Events/Item/EventDetails";
 import tr from "../../Utils/translationHelper";
 import "./EventDetailsPage.css";
@@ -10,7 +11,7 @@ import FetchingState from "../../UI/FetchingState";
 import selectEventWithTranslation from "../../Features/Events/SelectEventWithTranslation";
 import { getParam } from "../../Utils/reduxHelpers";
 import { fetchEventTranslationsFromServer } from "../../Features/Events/EventApi";
-import { Button } from "semantic-ui-react";
+import { objIsEmpty } from "../../Utils/jsTypesHelper";
 
 export const EventDetailsPage = props => {
   const {
@@ -45,7 +46,13 @@ export const EventDetailsPage = props => {
       </div>
       <br />
       <FetchingState fetchState={eventTranslationsFetchState}>
-        <EventDetails eventTranslation={eventTranslation} />
+        {objIsEmpty(eventTranslation) ? (
+          <div className="Event-Details-Translation-Missing" >
+            {tr("NoTranslation", "Sorry! We did not add translation yet")}
+          </div>
+        ) : (
+          <EventDetails eventTranslation={eventTranslation} />
+        )}
       </FetchingState>
     </div>
   );
