@@ -14,7 +14,11 @@ export const EventsDatePickerHandlers = {
       handlePeriodTypeChanged = () => {}
     } = args;
 
-    const dateFrom = DateTimeProvider.getDate();
+    const dateToday = DateTimeProvider.getDate();
+    const dateFrom = DateTimeProvider.getStartOfCurrentPeriod(
+      dateToday,
+      periodType
+    );
     const dateTo = DateTimeProvider.getEndOfCurrentPeriod(dateFrom, periodType);
 
     handlePeriodTypeChanged({
