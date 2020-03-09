@@ -4,26 +4,27 @@ import { Button } from "semantic-ui-react";
 import tr from "../Utils/translationHelper";
 import ModalWindow from "./Modal";
 import MediaLibrary from "./MediaLibrary/MediaLibrary";
-import BgImage from "./BgImage";
+import ImageItem from "../Features/Images/ImageItem";
 import "./ImageEditor.css";
 
 const ImageEditor = props => {
-  const { imgSrc, onFileChosen } = props;
+  const { imageId, onFileChosen } = props;
 
-  const [imageSrc, setImage] = useState(imgSrc);
   const [fileManagerWindowState, setFileManagerWindowState] = useState(false);
 
-  const onFileClick = chosenFile => {
-    const { src, id } = chosenFile;
+  const onFileClick = chosenFileId => {
     setFileManagerWindowState(false);
-    setImage(src);
-    onFileChosen({ id });
+
+    if (!chosenFileId) {
+      return;
+    }
+    onFileChosen({ id: chosenFileId });
   };
 
   return (
     <>
       <div className="Event-Editor-Form-Img-Wrapper">
-        <BgImage src={imageSrc} />
+        <ImageItem imageId={imageId} isBg />
       </div>
       <ModalWindow
         open={fileManagerWindowState}
@@ -46,11 +47,11 @@ const ImageEditor = props => {
 };
 
 ImageEditor.defaultProps = {
-  imgSrc: null //"https://cdn.pixabay.com/photo/2018/05/31/12/02/celebration-3443810_960_720.jpg"
+  imageId: 0
 };
 
 ImageEditor.propTypes = {
-  imgSrc: PropTypes.string,
+  imageId: PropTypes.number,
   onFileChosen: PropTypes.func.isRequired
 };
 

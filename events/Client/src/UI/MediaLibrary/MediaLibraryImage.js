@@ -1,11 +1,11 @@
 import PropTypes from "prop-types";
 import React from "react";
-import BgImage from "../BgImage";
+import ImageItem from "../../Features/Images/ImageItem";
 
 const MediaLibraryImage = props => {
-  const { src, imgWidth, imgHeight, onImageClick = () => {} } = props;
+  const { id, imgWidth, imgHeight, onImageClick = () => {} } = props;
 
-  if (!src) return null;
+  if (!id) return null;
 
   const imgWrapperStyle = {
     width: imgWidth || "25%",
@@ -22,20 +22,20 @@ const MediaLibraryImage = props => {
       className="Media-library-item"
       onKeyDown={onImageClick}
     >
-      <BgImage src={src} customClassName="Media-library-img" />
+      <ImageItem imageId={id} isBg customClassName="Media-library-img" />
     </div>
   );
 };
 
 MediaLibraryImage.defaultProps = {
-  src: null,
+  id: null,
   imgWidth: null,
   imgHeight: null,
   onImageClick: () => {}
 };
 
 MediaLibraryImage.propTypes = {
-  src: PropTypes.string,
+  id: PropTypes.number,
   imgWidth: PropTypes.string,
   imgHeight: PropTypes.string,
   onImageClick: PropTypes.func

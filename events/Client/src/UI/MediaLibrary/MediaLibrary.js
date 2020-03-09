@@ -1,60 +1,79 @@
 import PropTypes from "prop-types";
-import React from "react";
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 import MediaLibraryImage from "./MediaLibraryImage";
+import { imageOperations } from "../../Features/Images/ImagesApi";
+import { imageSelectors } from "../../Features/Images/ImagesHandlers";
+import FetchingState from "../FetchingState";
+import { objIsEmpty } from "../../Utils/jsTypesHelper";
+import { API_URL } from "../../constants";
 import "./MediaLibrary.css";
 
-const MediaLibrary = props => {
-  const { mediaFiles, onFileClick } = props;
+export const MediaLibrary = props => {
+  const {
+    mediaFiles,
+    onFileClick,
+    fetchImagesFromServer,
+    mediaFilesFetchingState
+  } = props;
 
-  if (!Array.isArray(mediaFiles) || mediaFiles.length <= 0) return null;
+  useEffect(() => {
+    fetchImagesFromServer();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  const mediaFilesResult = mediaFiles.map(mediaFile => {
-    return (
-      <MediaLibraryImage
-        key={mediaFile.id}
-        src={mediaFile.src}
-        onImageClick={() => onFileClick(mediaFile)}
-      />
-    );
-  });
+  const mediaFilesResult = [];
 
-  return <div className="Media-library">{mediaFilesResult}</div>;
+  if (!objIsEmpty(mediaFiles)) {
+    Object.entries(mediaFiles).forEach(([key, value]) => {
+      mediaFilesResult.push(
+        <MediaLibraryImage
+          key={key}
+          id={key ? Number(key) : null}
+          src={`${API_URL}/${value.src}`}
+          onImageClick={() => onFileClick(key)}
+        />
+      );
+    });
+  }
+
+  return (
+    <div className="Media-library">
+      <FetchingState showLoadingOnInit fetchState={mediaFilesFetchingState}>
+        {mediaFilesResult}
+      </FetchingState>
+    </div>
+  );
 };
 
 MediaLibrary.defaultProps = {
   onFileClick: null,
-  mediaFiles: [
-    { id: 1, src: "https://freesvg.org/img/1531595967.png", name: "image 1" },
-    {
-      id: 2,
-      src: "https://edgex.no/wp-content/uploads/2016/11/events.jpg",
-      name: "image 3"
-    },
-    {
-      id: 3,
-      src:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBNUOJjvZwKAdYK5gNLnTW6oCUYZuQU-fcYl9gbCnDHWporW-o3Q&s",
-      name: "image 4"
-    },
-    { id: 4, src: null, name: null },
-    { id: 5, src: "https://freesvg.org/img/1531595967.png", name: "image 1" },
-    {
-      id: 6,
-      src: "https://edgex.no/wp-content/uploads/2016/11/event.jpg",
-      name: "image 3"
-    },
-    {
-      id: 7,
-      src:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBNUOJjvZwKAdYK5gNLnTW6oCUYZuQU-fcYl9gbCnDHWporW-o3Q&s",
-      name: "image 7"
-    }
-  ]
+  mediaFilesFetchingState: null,
+  mediaFiles: []
 };
 
 MediaLibrary.propTypes = {
-  mediaFiles: PropTypes.instanceOf(Array),
-  onFileClick: PropTypes.func
+  mediaFiles: PropTypes.shape({ imageId: PropTypes.number }),
+  onFileClick: PropTypes.func,
+  fetchImagesFromServer: PropTypes.func.isRequired,
+  mediaFilesFetchingState: PropTypes.string
 };
 
-export default MediaLibrary;
+const mapStateToProps = state => {
+  return {
+    mediaFiles: imageSelectors.selectImages(state),
+    mediaFilesFetchingState: imageSelectors.selectFetchState(state)
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    fetchImagesFromServer: () =>
+      dispatch(imageOperations.fetchImagesFromServer())
+  };
+};
+
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(MediaLibrary)
+);

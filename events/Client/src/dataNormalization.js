@@ -12,10 +12,19 @@ const eventTranslationsAsPropertyInEvent = new schema.Entity(
   }
 );
 
+const imageAsPropertyInEvent = new schema.Entity(
+  "image",
+  {},
+  {
+    idAttribute: "imageId"
+  }
+);
+
 export const eventsSchema = new schema.Entity(
   "event",
   {
-    eventTranslations: [eventTranslationsAsPropertyInEvent]
+    eventTranslations: [eventTranslationsAsPropertyInEvent],
+    image: imageAsPropertyInEvent
   },
   { idAttribute: "eventId" }
 );
@@ -23,7 +32,9 @@ export const eventsSchema = new schema.Entity(
 /** array of event translations with event property [{eventTranslationId: 1, event={eventId:2}}] */
 const eventAsPropertyInEventTranslation = new schema.Entity(
   "event",
-  {},
+  {
+    image: imageAsPropertyInEvent
+  },
   { idAttribute: "eventId" }
 );
 
@@ -43,5 +54,14 @@ export const languageSchema = new schema.Entity(
   {},
   {
     idAttribute: "languageId"
+  }
+);
+
+/** array of images */
+export const imageSchema = new schema.Entity(
+  "images",
+  {},
+  {
+    idAttribute: "imageId"
   }
 );

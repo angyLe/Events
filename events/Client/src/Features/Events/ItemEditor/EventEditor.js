@@ -19,7 +19,7 @@ const EventEditor = props => {
     validationErrors
   } = props;
   const {
-    imgSrc,
+    imageId,
     name,
     title,
     shortDescription,
@@ -44,7 +44,7 @@ const EventEditor = props => {
                 property: "imageId"
               })
             }
-            imageSrc={imgSrc}
+            imageId={imageId}
           />
         </Form.Field>
 
@@ -279,6 +279,7 @@ const EventEditor = props => {
       />
 
       <Form.Button
+        className="clearFix"
         onClick={saveEvent}
         loading={eventSavingState === SAVING_STATE.saving}
         positive={false}
@@ -302,7 +303,7 @@ EventEditor.propTypes = {
   eventFormFields: PropTypes.shape({
     eventId: PropTypes.number,
     name: PropTypes.string,
-    imgSrc: PropTypes.string,
+    imageId: PropTypes.number,
     title: PropTypes.string,
     shortDescription: PropTypes.string,
     text: PropTypes.string,

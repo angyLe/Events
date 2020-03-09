@@ -4,18 +4,20 @@ import PropTypes from "prop-types";
 import { IMAGE_IS_NOT_AVAILABLE } from "../constants";
 
 const Img = props => {
-  const { imgSrc, className, fluid } = props;
-  return <Image fluid={fluid} className={className} src={imgSrc} />;
+  const { src, className, fluid, name } = props;
+  return <Image alt={name} fluid={fluid} className={className} src={src} />;
 };
 
 Img.defaultProps = {
-  imgSrc: IMAGE_IS_NOT_AVAILABLE,
+  name: "Image is not available",
+  src: IMAGE_IS_NOT_AVAILABLE,
   className: "",
   fluid: false
 };
 
 Img.propTypes = {
-  imgSrc: PropTypes.string,
+  name: PropTypes.string,
+  src: PropTypes.string,
   className: PropTypes.string,
   fluid: PropTypes.bool
 };

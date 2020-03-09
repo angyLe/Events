@@ -27,7 +27,7 @@ namespace Events.Controllers
 
         public async Task<IList<Event>> Handle(EventsQuery query, CancellationToken cancellationToken)
         {
-            IQueryable<Event> result = db.Events.Include(e => e.EventTranslations);
+            IQueryable<Event> result = db.Events.Include(e => e.EventTranslations).Include(e=>e.Image);
 
             if (query.Ids != null && query.Ids.Length > 0)
             {

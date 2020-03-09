@@ -68,6 +68,17 @@ const parseResponse = ({ dataToParse }) => {
   return result;
 };
 
+export const getUrlParamsFromArray = ({ ids = [], propertyName = `` }) => {
+  let urlParams = "";
+  if (!Array.isArray(ids) || ids.length <= 0) {
+    return null;
+  }
+  ids.forEach(e => {
+    urlParams += `${propertyName}=${e}&`;
+  });
+  return urlParams;
+};
+
 export const handleServerError = (response, status) => {
   const returnObj = {};
   returnObj.data = null;
@@ -100,7 +111,7 @@ export const handleServerError = (response, status) => {
         ? parsedData.errorCode
         : 1;
     const errorMessage = APP_SERVER_ERROR.byId(returnObj.appErrorCode);
-    returnObj.errorMessage = tr(errorMessage, errorMessage); //TODO: add error message translations 
+    returnObj.errorMessage = tr(errorMessage, errorMessage); //TODO: add error message translations
     notifyError({ message: returnObj.errorMessage });
   } else {
     const errorMessageTranslation = tr(

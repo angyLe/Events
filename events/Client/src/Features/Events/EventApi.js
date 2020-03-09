@@ -21,6 +21,7 @@ import {
   saveEventFailure,
   setValidationErrors
 } from "./EventEditorHandler";
+import { getImagesSuccess } from "../Images/ImagesHandlers";
 import { apiHelper } from "../../Utils/apiHelper";
 import { eventTranslationSchema, eventsSchema } from "../../dataNormalization";
 import { getObjElementByIndex, objIsEmpty } from "../../Utils/jsTypesHelper";
@@ -50,6 +51,7 @@ export const fetchEventsFromServer = args => {
         batch(() => {
           dispatch(getEventsTranslationsSuccess(entities.eventTranslations));
           dispatch(getEventsSuccess(entities.event));
+          dispatch(getImagesSuccess(entities.image));
         });
 
         return {
@@ -58,8 +60,6 @@ export const fetchEventsFromServer = args => {
         };
       })
       .catch(error => {
-        console.log("error");
-        console.log(error);
         dispatch(getEventsFailure());
         return Promise.reject();
       });
@@ -94,9 +94,6 @@ export const fetchEventTranslationsFromServer = ({
 }) => {
   // eslint-disable-next-line no-unused-vars
   return (dispatch, getState) => {
-    console.log("getEventsTranslationsStart");
-    console.log(getEventsTranslationsStart);
-
     dispatch(getEventsTranslationsStart());
 
     const url = createUrlToFetchEventTranslations({ languageId, eventId });
@@ -107,9 +104,11 @@ export const fetchEventTranslationsFromServer = ({
         const normalizeData = normalize(eventsResult, [eventTranslationSchema]);
         const entities =
           normalizeData && normalizeData.entities ? normalizeData.entities : {};
+
         batch(() => {
           dispatch(getEventsTranslationsSuccess(entities.eventTranslations));
           dispatch(getEventsSuccess(entities.event));
+          dispatch(getImagesSuccess(entities.image));
         });
 
         return normalizeData;
@@ -131,8 +130,8 @@ export const saveEvent = data => {
     const { eventId } = data;
     const { eventTranslationId } = data;
 
-    return apiHelper({ url, method: "post", dataToSent: data })
-      .then(res => {
+    return apiHelper({ url, method: "post", dataToSent: data }).then(
+      res => {
         const eventResult = res || {};
         const normalizeData = normalize(eventResult, eventsSchema);
 
@@ -173,12 +172,14 @@ export const saveEvent = data => {
 
         return {
           event,
+          eventId: ev.eventId,
           eventTranslations
         };
-      })
-      .catch(res => {
+      },
+      res => {
         const error = res || {};
         console.log(res);
+        console.log(error.statusCode);
 
         if (error.statusCode === 400) {
           dispatch(setValidationErrors(error.data));
@@ -186,7 +187,8 @@ export const saveEvent = data => {
           dispatch(saveEventFailure());
         }
         return Promise.reject();
-      });
+      }
+    );
   };
 };
 
