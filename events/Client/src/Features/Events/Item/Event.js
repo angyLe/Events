@@ -7,33 +7,38 @@ import dayjs from "dayjs";
 import EventPrice from "../EventPrice/EventPrice";
 import "./Event.css";
 import selectEventWithTranslation from "../SelectEventWithTranslation";
-import { IMAGE_IS_NOT_AVAILABLE } from "../../../constants";
+import ImageItem from "../../Images/ImageItem";
 
 export const Event = props => {
   const { event, navigateToEvent } = props;
 
-  const { imgSrc, title, name, shortDescription, price, dateTimeFrom } = event;
+  const { imageId, title, name, shortDescription, price, dateTimeFrom } = event;
 
   return (
     <div className="Event-element">
       <Card
         as="a"
         href=""
+        className="Event-element-card"
         onClick={e => {
           e.preventDefault();
           navigateToEvent();
         }}
-        className="Event-element-card"
-        image={imgSrc || IMAGE_IS_NOT_AVAILABLE}
-        header={title || name}
-        meta={dayjs(dateTimeFrom).format("DD MMMM, HH:MM")}
-        description={shortDescription || ""}
-        extra={
-          <div>
-            <EventPrice price={price} />
-          </div>
-        }
-      />
+      >
+        <ImageItem imageId={imageId} />
+        <Card.Content>
+          <Card.Header>{title || name}</Card.Header>
+          <Card.Meta>
+            <span className="date">
+              {dayjs(dateTimeFrom).format("DD MMMM, HH:MM")}
+            </span>
+          </Card.Meta>
+          <Card.Description>{shortDescription || ""}</Card.Description>
+        </Card.Content>
+        <Card.Content extra>
+          <EventPrice price={price} />
+        </Card.Content>
+      </Card>
     </div>
   );
 };
@@ -45,7 +50,7 @@ Event.defaultProps = {
 Event.propTypes = {
   event: PropTypes.shape({
     imgSrc: PropTypes.string,
-    imgId: PropTypes.number,
+    imageId: PropTypes.number,
     title: PropTypes.string,
     name: PropTypes.string.isRequired,
     shortDescription: PropTypes.string,

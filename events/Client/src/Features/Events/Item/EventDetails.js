@@ -1,17 +1,17 @@
 import React from "react";
 import PropTypes from "prop-types";
 import dayjs from "dayjs";
-import { Header, Segment } from "semantic-ui-react";
+import { Header, Segment, Card } from "semantic-ui-react";
 import { VALUTA } from "../../../constants";
 import "./EventDetails.css";
 import tr from "../../../Utils/translationHelper";
-import Img from "../../../UI/Img";
+import ImageItem from "../../Images/ImageItem";
 
 const EventDetails = props => {
   const { eventTranslation = {} } = props;
 
   const {
-    imgSrc,
+    imageId,
     title,
     text,
     price,
@@ -24,69 +24,76 @@ const EventDetails = props => {
   } = eventTranslation;
 
   return (
-    <div className="Event-details">
-      <h1 className="Event-details-header">{title}</h1>
-      <div className="Event-details-from-date">
-        {dayjs(dateTimeFrom).format("DD MMMM")}
-      </div>
-      <Img fluid className="Event-details-thumb" src={imgSrc} />
-      <Segment className="Event-details-all-info" padded>
-        <Header as="h3">{tr("EventDetails", "Details")}</Header>
+    <Card fluid className="Event-details">
+      <Card.Content>
+        <Card.Header className="Event-details-header">{title}</Card.Header>
+        <Card.Meta className="Event-details-from-date">
+          {dayjs(dateTimeFrom).format("DD MMMM")}
+        </Card.Meta>
+        <ImageItem
+          fluid
+          imageId={imageId}
+          isBg={false}
+          customClassName="Event-details-thumb"
+        />
+        <Segment className="Event-details-all-info" padded>
+          <Header as="h3">{tr("EventDetails", "Details")}</Header>
 
-        <div className="Event-details-all-info-items">
-          <EventDetailsItem
-            itemContent={dayjs(dateTimeFrom).format("HH:MM")}
-            itemName={tr("TimeStart", "Time start:")}
-          />
-          {dateTimeTo ? (
+          <div className="Event-details-all-info-items">
             <EventDetailsItem
-              itemContent={dayjs(dateTimeTo).format("HH:MM")}
-              itemName={tr("TimeEnd", "Time end:")}
+              itemContent={dayjs(dateTimeFrom).format("HH:MM")}
+              itemName={tr("TimeStart", "Time start:")}
             />
-          ) : (
-            ""
-          )}
-          {address && address.length > 0 ? (
+            {dateTimeTo ? (
+              <EventDetailsItem
+                itemContent={dayjs(dateTimeTo).format("HH:MM")}
+                itemName={tr("TimeEnd", "Time end:")}
+              />
+            ) : (
+              ""
+            )}
+            {address && address.length > 0 ? (
+              <EventDetailsItem
+                itemContent={address}
+                itemName={tr("Address", "Address:")}
+              />
+            ) : (
+              ""
+            )}
+            {phone && phone.length > 0 ? (
+              <EventDetailsItem
+                itemContent={phone}
+                itemName={tr("Phone", "Phone:")}
+              />
+            ) : (
+              ""
+            )}
+            {website && website.length > 0 ? (
+              <EventDetailsItem
+                itemContent={website}
+                itemName={tr("WebsiteInfo", "Website :")}
+              />
+            ) : (
+              ""
+            )}
             <EventDetailsItem
-              itemContent={address}
-              itemName={tr("Address", "Address:")}
+              itemContent={`${price} ${VALUTA}`}
+              itemName={tr("Price", "Price: ")}
             />
-          ) : (
-            ""
-          )}
-          {phone && phone.length > 0 ? (
-            <EventDetailsItem
-              itemContent={phone}
-              itemName={tr("Phone", "Phone:")}
-            />
-          ) : (
-            ""
-          )}
-          {website && website.length > 0 ? (
-            <EventDetailsItem
-              itemContent={website}
-              itemName={tr("WebsiteInfo", "Website :")}
-            />
-          ) : (
-            ""
-          )}
-          <EventDetailsItem
-            itemContent={`${price} ${VALUTA}`}
-            itemName={tr("Price", "Price: ")}
-          />
-          {priceDetails && priceDetails.length > 0 ? (
-            <EventDetailsItem
-              itemContent={priceDetails}
-              itemName={tr("PriceDetails", "Price details:")}
-            />
-          ) : (
-            ""
-          )}
-        </div>
-      </Segment>
+            {priceDetails && priceDetails.length > 0 ? (
+              <EventDetailsItem
+                itemContent={priceDetails}
+                itemName={tr("PriceDetails", "Price details:")}
+              />
+            ) : (
+              ""
+            )}
+          </div>
+        </Segment>
 
-      <div className="Event-details-text">{text}</div>
-    </div>
+        <div className="Event-details-text">{text}</div>
+      </Card.Content>
+    </Card>
   );
 };
 
@@ -98,6 +105,7 @@ EventDetails.propTypes = {
   eventTranslation: PropTypes.shape({
     eventId: PropTypes.number,
     imgSrc: PropTypes.string,
+    imageId: PropTypes.number,
     title: PropTypes.string,
     text: PropTypes.string,
     price: PropTypes.number,
